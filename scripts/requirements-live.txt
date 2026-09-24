@@ -1,0 +1,4 @@
+# Add these to the existing CPU or GPU embedding environment.
+coincurve>=21,<22
+# Independent Arrow interoperability tests; not needed by the running Julia index.
+pyarrow>=20,<24

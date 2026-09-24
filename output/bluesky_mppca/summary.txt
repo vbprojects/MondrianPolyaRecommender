@@ -1,0 +1,16 @@
+Bluesky local online MPPCA; 100000 original 256D embeddings; static, no decay.
+Shared scaffold from output/bluesky_tree/models.jls; rank 4, max 2 components per owner, split count 128, novelty radius .35, minimum seeding mass 16.
+Historical mixtures retained at ancestors. Approximate online soft responsibilities and incremental truncated scatter updates; lost scatter trace supplies isotropic noise.
+No per-vector codes stored. This is summary compression, not a versioned vector codec.
+Published tree counts: 256 fixed-seed Gaussian samples/component, clipped to owning bounds (censored Gaussian approximation, not exact conditional Gaussian integration).
+method,model_bytes,mean_L1_vs_reference,fit_seconds
+reference,8133280,0,0.572275287
+residual,8225488,0.6912197063699634,previous_run
+microclusters,20636368,0.13383329982926398,previous_run
+local_mppca,16782576,0.4011503801817601,1.531643429
+Components: 1318; owning nodes: 752; mass: 100000.0
+Allocation seconds: 1.063507876; independent allocation seed L1 difference: 0.033869111886303635
+Normalization error: 1.1102230246251565e-16
+Memory excludes original vectors/text, runtime working memory and export. Budgets are not matched; same-data reference comparison is not held-out recommendation quality.
+A 256D Cartesian histogram is omitted: 16 bins per coordinate would require 16^256 cells.
+Global count, first moments, total second moment, rank/component caps and finite parameters validated.

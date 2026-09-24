@@ -1,0 +1,21 @@
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const assert=require('node:assert/strict');
+(async()=>{const b=await chromium.launch();const p=await b.newPage();const errors=[],requests=[];p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>requests.push(r.url()));await p.goto(require('node:url').pathToFileURL(require('node:path').resolve(__dirname,'../output/interactive/demo.html')).href);
+const initial=await p.locator('#text').textContent();assert(initial.length>0);
+const first=await p.evaluate(()=>({i:current,p:belief.slice(),choice}));
+await p.click('#like');assert.notEqual(await p.locator('#text').textContent(),initial);
+assert.match(await p.locator('#status').textContent(),/1 ratings/);
+assert(await p.evaluate(()=>Math.abs(belief.reduce((a,b)=>a+b,0)-1)<1e-12));
+assert(await p.evaluate(()=>belief.every(Number.isFinite)));
+const second=await p.locator('#text').textContent();await p.reload();assert.equal(await p.locator('#text').textContent(),second);
+await p.click('#undo');assert.equal(await p.locator('#text').textContent(),initial);
+await p.click('#dislike');assert(await p.evaluate(()=>history[0].action==='dislike'));
+const before=await p.evaluate(()=>belief.slice());await p.click('#skip');const after=await p.evaluate(()=>belief.slice());assert.deepEqual(before,after);
+// Candidate selected must maximize the stated expected information criterion.
+assert(await p.evaluate(()=>{const L=D.likelihood[current];let z=0,h=0;for(let i=0;i<belief.length;i++){z+=belief[i]*L[i];h+=belief[i]*binary(L[i])}return Math.abs(choice.gain-(binary(z)-h))<1e-12}));
+const download= p.waitForEvent('download');await p.click('#download');assert.equal((await download).suggestedFilename(),'interest-ratings.json');
+await p.evaluate(()=>{D.posts[current].text='<img src=x onerror="window.injected=true">';$('text').textContent=D.posts[current].text});assert.equal(await p.locator('#text img').count(),0);
+await p.setViewportSize({width:390,height:844});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+p.on('dialog',d=>d.accept());await p.click('#reset');assert.match(await p.locator('#status').textContent(),/0 ratings/);
+assert.equal(errors.length,0);assert(requests.every(u=>u.startsWith('file:')));
+console.log('Passed: like/dislike, normalized posterior, no repeats, skip unchanged, undo, reload, IG score, export, reset, text safety, mobile, no external requests.');await b.close()})().catch(e=>{console.error(e);process.exit(1)});

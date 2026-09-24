@@ -1,0 +1,19 @@
+MNIST PCA visualization; PCA fit on 60000 training images only; tree unchanged.
+PC1 variance fraction: 0.09704664359713926; PC2: 0.0709592405909447
+mode,threshold,retained_groups,test_majority_accuracy
+Reference,0.0,975,0.5532
+Reference,0.55,578,0.5064
+Reference,0.6,462,0.4891
+Reference,0.65,374,0.4688
+Reference,0.7,287,0.4502
+Reference,0.75,234,0.4344
+Reference,0.8,140,0.3775
+Reference,0.9,72,0.3258
+Ancestor residual,0.0,347,0.4963
+Ancestor residual,0.55,164,0.4382
+Ancestor residual,0.6,139,0.4325
+Ancestor residual,0.65,113,0.4036
+Ancestor residual,0.7,107,0.4029
+Ancestor residual,0.75,79,0.371
+Ancestor residual,0.8,54,0.3425
+Ancestor residual,0.9,1,0.1135

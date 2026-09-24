@@ -1,0 +1,12 @@
+One million Bluesky posts — leaf-local online rank-4 PPCA
+Posts: 1,000,000; dimensions: 256; static, no decay
+Cuts: 1,410; leaves: 1,411; nodes: 2,821; maximum depth: 16
+Tree retained memory: 113.07 MiB (includes reservoirs, bounds, PPCA states)
+PPCA state containers: 16.98 MiB; reservoirs: 84.54 MiB
+Process RSS at last checkpoint: 1673.07 MiB; peak RSS: 1673.07 MiB
+Full embedding archive: 976.56 MiB; serialized model: 112.36 MiB
+Fit including tracking: 17.61 seconds
+PPCA updates: 12.98s; moment-transfer splits: 0.48s
+GPU embedding inference: 229.99s; tokenization: 13.68s
+Transferred leaf mass versus exact post routing: TV=0.097688
+Total preserved mass: 1000000.000000

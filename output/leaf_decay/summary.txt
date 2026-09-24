@@ -1,0 +1,2 @@
+(half_life_hours = "disabled", posts = 89798, span_hours = 70.92833333333333, leaves = 511, cuts = 510, effective_mass = 89797.99999999999, mass_tv = 0.0930304617683599, tree_bytes = 39863408, seconds = 2.536954912)
+(half_life_hours = "6", posts = 89798, span_hours = 70.92833333333333, leaves = 289, cuts = 288, effective_mass = 2652.609270533782, mass_tv = 0.00230463194263447, tree_bytes = 24719032, seconds = 2.346813386)

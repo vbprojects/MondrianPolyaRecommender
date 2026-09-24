@@ -1,0 +1,19 @@
+100,000-post static embedding tree experiment
+Input: /home/coll/mondrianpolyarecom/data/bluesky_100000
+Dimensions: 256; posts: 100000; no projection or time decay.
+Adaptive Mondrian-style scaffold: observed-range random cuts, mass-priority scheduling, max 2047 nodes, min split occupancy 128, depth cap 24.
+This is an occupancy-adapted heuristic, not an exact/projective Mondrian process.
+Pólya branch prior kappa=2, centered on split-axis volume ratio.
+Residuals: prospective activation, old mass remains at ancestor; uniform-component mixture (not Beta branch inference).
+Microclusters: max 4 per active leaf, Euclidean radius 0.2, count/centroid/diagonal M2; whole-cluster centroid routing on split.
+Microcluster moments are exact global sufficient statistics; spatial branch counts after centroid routing are approximate. Not mixture PPCA.
+Input order is seeded random sample order, not chronological. All 100k rows also determine the scaffold; no held-out evaluation.
+
+method,leaves,summaries,represented_mass,reachable_model_bytes,fit_seconds,normalization_error,L1_vs_reference
+reference,956,956,100000,8144104,0.572275287,1.1102230246251565e-16,0.0
+residual,395,752,100000.0,8236312,0.076523787,0.0,0.6912197063699622
+microclusters,934,2946,100000.0,20754736,0.185077691,2.220446049250313e-16,0.13383329982926406
+
+Memory includes scaffold geometry and model statistics, excludes external posts/embeddings and exports. Reference is already a count summary, not a raw replay buffer; compressors need not be smaller than this baseline.
+L1 is exact over common nested box support up to floating-point error. It measures approximation of the reference density, not recommendation quality.
+models.jls is Julia Serialization (load only trusted artifacts with compatible code/Julia). Portable CSV exports retain geometry and statistics.

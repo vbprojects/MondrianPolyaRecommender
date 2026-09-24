@@ -1,0 +1,7 @@
+Leaf-only latent Gaussian experiment: 80000 training / 20000 held-out posts.
+name | training model MiB incl tree/reservoir | compact Float32 decoder KiB | test cosine | sampling acceptance | mean proposal IG bits
+diagonal_r0 | 4.777 | 128.5 | 0.76987 | 0.4006 | 0.12702
+ppca_r4 | 5.281 | 320.8 | 0.97034 | 0.3299 | 0.16307
+ppca_r8 | 5.783 | 576.8 | 0.98929 | 0.3096 | 0.13911
+lowrank_diagonal_r4 | 5.281 | 384.5 | 0.96987 | 0.4299 | 0.13338
+lowrank_diagonal_r8 | 5.783 | 640.5 | 0.98909 | 0.4495 | 0.12854

@@ -1,0 +1,20 @@
+extends: smoke.yaml
+scale: pilot
+mohawk:
+  examples: 1024
+  validation_examples: 64
+  matrix_steps: 200
+  block_steps: 500
+  block_freeze_ffn_steps: 250
+run_dir: runs/pilot-mohawk
+data:
+  max_examples: 200000
+  min_per_language: 1000
+recovery:
+  examples: 8192
+  steps: 500
+  freeze_steps: 100
+training:
+  full_depth_steps: 2000
+  prefix_steps: 500
+  matryoshka_steps: 3000

@@ -1,0 +1,17 @@
+Sibling merging stress test
+2D moving clusters: 10,500 arrivals across 120 minutes, one-minute half-life, 15-minute silence. Real 256D embeddings: 12,000 existing Bluesky posts with synthetic burst/silence timestamps; this clock is not their historical posting time. Three warmed timed fits per backend; callbacks and audits excluded from timing.
+
+Decay only: final 70 leaves, 76.7 KiB live nodes; 69 splits / 0 merges; peak 70 leaves.
+Decay + sibling merging: final 20 leaves, 21.6 KiB live nodes; 75 splits / 56 merges; peak 26 leaves.
+
+Three warmed whole-fit timing trials per method; timings exclude audits and visualization.
+2D moving topics | Reference Julia: median 0.01622s (range 0.01557–0.01854); idle maintenance 20 → 1 leaves, 44.4 → 3.4 KiB live model.
+2D moving topics | Scheduled KA CPU: median 0.01552s (range 0.01488–0.02255); idle maintenance 20 → 1 leaves, 44.4 → 3.4 KiB live model.
+2D moving topics | Scheduled KA GPU: median 0.29093s (range 0.26895–0.30489); idle maintenance 20 → 1 leaves, 44.4 → 3.4 KiB live model.
+256D Bluesky embeddings / synthetic clock | Reference Julia: median 0.20927s (range 0.17780–0.21112); idle maintenance 21 → 1 leaves, 1077.4 → 51.0 KiB live model.
+256D Bluesky embeddings / synthetic clock | Scheduled KA CPU: median 0.10640s (range 0.10325–0.10709); idle maintenance 21 → 1 leaves, 1077.4 → 51.0 KiB live model.
+256D Bluesky embeddings / synthetic clock | Scheduled KA GPU: median 0.23744s (range 0.23657–0.24303); idle maintenance 21 → 1 leaves, 1077.4 → 51.0 KiB live model.
+
+Identical topology/reservoirs/counts in every timed fit. Worst numerical error 4.41e-14.
+Memory counts live tree models/reservoirs and indexing metadata. It excludes source embeddings, diagnostic history, allocator caches, and process/runtime state.
+Quiet sibling pairs merge by combined mass. Moments preserve stored mass, first moment and scatter diagonal; low-rank correlations are recompressed. Reservoirs keep newest retained arrival IDs. Source archives are untouched.

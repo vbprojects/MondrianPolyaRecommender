@@ -1,0 +1,110 @@
+Local embedding codecs under continuing arrivals, splits, merges and expiry
+12 methods; 6 workloads; 3 seeds each. Bluesky: all 100,000 posts per seed, 256 dimensions.
+Artificial burst/idle clock; Bluesky archive order is not chronological.
+Means use equally weighted seed means across day >=2 grown-state checkpoints.
+Packed bytes include shared decoders, scales, UUID128, UInt64 membership and block headers.
+RAM is reachable Julia store memory; tree, input batches, text and audit storage are separate.
+
+2D moving clusters
+  Float32 reference: packed 32.4 B/post; RAM 38.6 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  Float16 coordinates: packed 28.4 B/post; RAM 34.6 B/post; recall 99.6%; midpoint recall 99.6%; local midpoint 99.6%; NRMSE 0.0002; membership error 0.02%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  8-bit coordinates: packed 30.4 B/post; RAM 38.5 B/post; recall 97.1%; midpoint recall 96.6%; local midpoint 96.6%; NRMSE 0.0021; membership error 0.11%; IG regret 0.000001 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  4-bit coordinates: packed 29.4 B/post; RAM 37.5 B/post; recall 55.6%; midpoint recall 54.8%; local midpoint 56.5%; NRMSE 0.0373; membership error 2.38%; IG regret 0.000125 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  Centroid + 8-bit residual: packed 30.8 B/post; RAM 40.2 B/post; recall 99.5%; midpoint recall 99.6%; local midpoint 99.6%; NRMSE 0.0005; membership error 0.03%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  Centroid + 4-bit residual: packed 29.8 B/post; RAM 39.2 B/post; recall 91.2%; midpoint recall 91.6%; local midpoint 92.1%; NRMSE 0.0082; membership error 0.51%; IG regret 0.000004 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  Frozen local PPCA r4: packed 33.7 B/post; RAM 41.5 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  Frozen batch PCA r16: packed 33.6 B/post; RAM 41.5 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  PPCA r4 + 4-bit residual: packed 38.7 B/post; RAM 49.7 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  Adaptive rank / 8-bit fallback: packed 30.4 B/post; RAM 38.5 B/post; recall 97.1%; midpoint recall 96.6%; local midpoint 96.6%; NRMSE 0.0021; membership error 0.11%; IG regret 0.000001 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  Inherited basis + innovations: packed 32.9 B/post; RAM 39.8 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  Sequential PPCA r4: packed 33.5 B/post; RAM 49.1 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.6 ms per 1,000 arrivals
+
+Stable rank-four manifold
+  Float32 reference: packed 152.5 B/post; RAM 159.2 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  Float16 coordinates: packed 88.5 B/post; RAM 95.2 B/post; recall 100.0%; midpoint recall 99.9%; local midpoint 99.8%; NRMSE 0.0002; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  8-bit coordinates: packed 60.5 B/post; RAM 69.4 B/post; recall 99.1%; midpoint recall 99.3%; local midpoint 99.0%; NRMSE 0.0059; membership error 0.42%; IG regret 0.000000 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  4-bit coordinates: packed 44.5 B/post; RAM 53.4 B/post; recall 88.9%; midpoint recall 88.8%; local midpoint 86.7%; NRMSE 0.1066; membership error 7.35%; IG regret 0.000157 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  Centroid + 8-bit residual: packed 64.5 B/post; RAM 74.7 B/post; recall 99.4%; midpoint recall 99.4%; local midpoint 99.3%; NRMSE 0.0035; membership error 0.28%; IG regret 0.000000 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  Centroid + 4-bit residual: packed 48.5 B/post; RAM 58.7 B/post; recall 92.7%; midpoint recall 93.0%; local midpoint 91.8%; NRMSE 0.0634; membership error 4.61%; IG regret 0.000021 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  Frozen local PPCA r4: packed 59.9 B/post; RAM 68.6 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 99.7%; NRMSE 0.0024; membership error 0.21%; IG regret 0.000000 bits; encode/maintain 0.1/0.2 ms per 1,000 arrivals
+  Frozen batch PCA r16: packed 150.8 B/post; RAM 159.4 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 99.9%; NRMSE 0.0010; membership error 0.08%; IG regret 0.000000 bits; encode/maintain 3.0/0.4 ms per 1,000 arrivals
+  PPCA r4 + 4-bit residual: packed 79.9 B/post; RAM 92.1 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 99.9%; NRMSE 0.0002; membership error 0.02%; IG regret 0.000000 bits; encode/maintain 0.2/0.2 ms per 1,000 arrivals
+  Adaptive rank / 8-bit fallback: packed 56.8 B/post; RAM 65.6 B/post; recall 99.7%; midpoint recall 99.8%; local midpoint 99.5%; NRMSE 0.0042; membership error 0.32%; IG regret 0.000000 bits; encode/maintain 4.0/0.2 ms per 1,000 arrivals
+  Inherited basis + innovations: packed 44.8 B/post; RAM 52.3 B/post; recall 100.0%; midpoint recall 99.9%; local midpoint 99.7%; NRMSE 0.0025; membership error 0.23%; IG regret 0.000000 bits; encode/maintain 0.3/0.2 ms per 1,000 arrivals
+  Sequential PPCA r4: packed 53.4 B/post; RAM 77.6 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 99.6%; NRMSE 0.0025; membership error 0.23%; IG regret 0.000000 bits; encode/maintain 0.1/1.8 ms per 1,000 arrivals
+
+Rotating rank-four manifold
+  Float32 reference: packed 152.5 B/post; RAM 159.1 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  Float16 coordinates: packed 88.5 B/post; RAM 95.1 B/post; recall 100.0%; midpoint recall 99.9%; local midpoint 99.9%; NRMSE 0.0002; membership error 0.01%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  8-bit coordinates: packed 60.5 B/post; RAM 69.1 B/post; recall 99.4%; midpoint recall 99.3%; local midpoint 99.0%; NRMSE 0.0055; membership error 0.37%; IG regret 0.000000 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  4-bit coordinates: packed 44.5 B/post; RAM 53.1 B/post; recall 91.5%; midpoint recall 90.0%; local midpoint 87.8%; NRMSE 0.0996; membership error 6.31%; IG regret 0.000129 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  Centroid + 8-bit residual: packed 64.3 B/post; RAM 74.4 B/post; recall 99.5%; midpoint recall 99.5%; local midpoint 99.4%; NRMSE 0.0033; membership error 0.24%; IG regret 0.000001 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  Centroid + 4-bit residual: packed 48.3 B/post; RAM 58.4 B/post; recall 94.2%; midpoint recall 93.3%; local midpoint 92.2%; NRMSE 0.0605; membership error 4.07%; IG regret 0.000053 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  Frozen local PPCA r4: packed 59.4 B/post; RAM 67.8 B/post; recall 79.9%; midpoint recall 77.7%; local midpoint 78.7%; NRMSE 0.1268; membership error 6.44%; IG regret 0.000720 bits; encode/maintain 0.1/0.2 ms per 1,000 arrivals
+  Frozen batch PCA r16: packed 144.5 B/post; RAM 153.0 B/post; recall 99.2%; midpoint recall 98.9%; local midpoint 98.3%; NRMSE 0.0106; membership error 0.76%; IG regret 0.000000 bits; encode/maintain 3.0/0.4 ms per 1,000 arrivals
+  PPCA r4 + 4-bit residual: packed 79.4 B/post; RAM 91.2 B/post; recall 98.9%; midpoint recall 98.6%; local midpoint 98.1%; NRMSE 0.0125; membership error 0.72%; IG regret 0.000002 bits; encode/maintain 0.2/0.2 ms per 1,000 arrivals
+  Adaptive rank / 8-bit fallback: packed 55.3 B/post; RAM 63.9 B/post; recall 98.6%; midpoint recall 97.8%; local midpoint 97.1%; NRMSE 0.0204; membership error 1.50%; IG regret 0.000002 bits; encode/maintain 3.3/0.2 ms per 1,000 arrivals
+  Inherited basis + innovations: packed 85.1 B/post; RAM 92.5 B/post; recall 99.4%; midpoint recall 99.4%; local midpoint 97.7%; NRMSE 0.0266; membership error 1.89%; IG regret 0.000000 bits; encode/maintain 0.4/0.6 ms per 1,000 arrivals
+  Sequential PPCA r4: packed 53.0 B/post; RAM 75.9 B/post; recall 56.8%; midpoint recall 54.8%; local midpoint 50.9%; NRMSE 0.3812; membership error 22.52%; IG regret 0.005163 bits; encode/maintain 0.1/1.8 ms per 1,000 arrivals
+
+Rotating, long retention
+  Float32 reference: packed 152.5 B/post; RAM 159.8 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/1.0 ms per 1,000 arrivals
+  Float16 coordinates: packed 88.5 B/post; RAM 95.8 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 99.9%; NRMSE 0.0002; membership error 0.01%; IG regret 0.000000 bits; encode/maintain 0.0/0.7 ms per 1,000 arrivals
+  8-bit coordinates: packed 60.5 B/post; RAM 69.9 B/post; recall 99.2%; midpoint recall 99.2%; local midpoint 98.8%; NRMSE 0.0055; membership error 0.53%; IG regret 0.000001 bits; encode/maintain 0.1/0.8 ms per 1,000 arrivals
+  4-bit coordinates: packed 44.5 B/post; RAM 53.9 B/post; recall 90.2%; midpoint recall 88.6%; local midpoint 85.0%; NRMSE 0.0998; membership error 9.37%; IG regret 0.000103 bits; encode/maintain 0.2/0.8 ms per 1,000 arrivals
+  Centroid + 8-bit residual: packed 64.3 B/post; RAM 75.1 B/post; recall 99.7%; midpoint recall 99.6%; local midpoint 99.2%; NRMSE 0.0033; membership error 0.34%; IG regret 0.000000 bits; encode/maintain 0.1/0.8 ms per 1,000 arrivals
+  Centroid + 4-bit residual: packed 48.3 B/post; RAM 59.1 B/post; recall 93.2%; midpoint recall 91.8%; local midpoint 89.3%; NRMSE 0.0608; membership error 5.96%; IG regret 0.000064 bits; encode/maintain 0.2/0.8 ms per 1,000 arrivals
+  Frozen local PPCA r4: packed 59.4 B/post; RAM 68.6 B/post; recall 75.3%; midpoint recall 73.9%; local midpoint 72.8%; NRMSE 0.1276; membership error 10.02%; IG regret 0.000521 bits; encode/maintain 0.1/1.3 ms per 1,000 arrivals
+  Frozen batch PCA r16: packed 144.8 B/post; RAM 154.0 B/post; recall 99.2%; midpoint recall 98.4%; local midpoint 97.6%; NRMSE 0.0106; membership error 1.13%; IG regret 0.000002 bits; encode/maintain 2.8/3.2 ms per 1,000 arrivals
+  PPCA r4 + 4-bit residual: packed 79.4 B/post; RAM 92.0 B/post; recall 98.4%; midpoint recall 98.1%; local midpoint 97.6%; NRMSE 0.0126; membership error 1.05%; IG regret 0.000004 bits; encode/maintain 0.2/1.6 ms per 1,000 arrivals
+  Adaptive rank / 8-bit fallback: packed 55.4 B/post; RAM 64.7 B/post; recall 98.3%; midpoint recall 97.3%; local midpoint 95.5%; NRMSE 0.0204; membership error 2.13%; IG regret 0.000001 bits; encode/maintain 3.6/1.2 ms per 1,000 arrivals
+  Inherited basis + innovations: packed 80.8 B/post; RAM 88.8 B/post; recall 99.2%; midpoint recall 99.0%; local midpoint 95.8%; NRMSE 0.0297; membership error 2.92%; IG regret 0.000000 bits; encode/maintain 0.7/4.0 ms per 1,000 arrivals
+  Sequential PPCA r4: packed 50.9 B/post; RAM 136.1 B/post; recall 22.3%; midpoint recall 19.9%; local midpoint 19.1%; NRMSE 0.9641; membership error 59.94%; IG regret 0.020702 bits; encode/maintain 0.1/36.7 ms per 1,000 arrivals
+
+Sixteen active directions
+  Float32 reference: packed 152.5 B/post; RAM 159.2 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.2 ms per 1,000 arrivals
+  Float16 coordinates: packed 88.5 B/post; RAM 95.2 B/post; recall 100.0%; midpoint recall 99.8%; local midpoint 99.9%; NRMSE 0.0002; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.0/0.1 ms per 1,000 arrivals
+  8-bit coordinates: packed 60.5 B/post; RAM 69.3 B/post; recall 99.1%; midpoint recall 99.1%; local midpoint 99.1%; NRMSE 0.0054; membership error 0.37%; IG regret 0.000000 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  4-bit coordinates: packed 44.5 B/post; RAM 53.3 B/post; recall 89.5%; midpoint recall 89.9%; local midpoint 87.8%; NRMSE 0.0971; membership error 6.28%; IG regret 0.000143 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  Centroid + 8-bit residual: packed 64.4 B/post; RAM 74.7 B/post; recall 99.2%; midpoint recall 99.3%; local midpoint 99.1%; NRMSE 0.0050; membership error 0.37%; IG regret 0.000001 bits; encode/maintain 0.1/0.1 ms per 1,000 arrivals
+  Centroid + 4-bit residual: packed 48.4 B/post; RAM 58.7 B/post; recall 90.1%; midpoint recall 90.5%; local midpoint 89.4%; NRMSE 0.0900; membership error 6.04%; IG regret 0.000068 bits; encode/maintain 0.2/0.1 ms per 1,000 arrivals
+  Frozen local PPCA r4: packed 59.9 B/post; RAM 68.5 B/post; recall 11.7%; midpoint recall 12.8%; local midpoint 19.8%; NRMSE 0.7207; membership error 35.56%; IG regret 0.009385 bits; encode/maintain 0.1/0.2 ms per 1,000 arrivals
+  Frozen batch PCA r16: packed 150.7 B/post; RAM 159.3 B/post; recall 100.0%; midpoint recall 99.7%; local midpoint 98.6%; NRMSE 0.0103; membership error 0.66%; IG regret 0.000000 bits; encode/maintain 3.4/0.5 ms per 1,000 arrivals
+  PPCA r4 + 4-bit residual: packed 79.9 B/post; RAM 92.0 B/post; recall 91.9%; midpoint recall 92.2%; local midpoint 90.5%; NRMSE 0.0708; membership error 4.71%; IG regret 0.000051 bits; encode/maintain 0.2/0.3 ms per 1,000 arrivals
+  Adaptive rank / 8-bit fallback: packed 60.5 B/post; RAM 69.3 B/post; recall 99.1%; midpoint recall 99.1%; local midpoint 99.1%; NRMSE 0.0054; membership error 0.37%; IG regret 0.000000 bits; encode/maintain 3.8/0.1 ms per 1,000 arrivals
+  Inherited basis + innovations: packed 93.1 B/post; RAM 100.6 B/post; recall 97.2%; midpoint recall 96.7%; local midpoint 94.7%; NRMSE 0.0576; membership error 3.01%; IG regret 0.000049 bits; encode/maintain 0.9/0.9 ms per 1,000 arrivals
+  Sequential PPCA r4: packed 52.2 B/post; RAM 71.5 B/post; recall 9.2%; midpoint recall 9.9%; local midpoint 18.6%; NRMSE 0.8856; membership error 45.98%; IG regret 0.011981 bits; encode/maintain 0.2/1.7 ms per 1,000 arrivals
+
+Bluesky 100,000
+  Float32 reference: packed 1048.2 B/post; RAM 1051.0 B/post; recall 100.0%; midpoint recall 100.0%; local midpoint 100.0%; NRMSE 0.0000; membership error 0.00%; IG regret 0.000000 bits; encode/maintain 0.1/0.3 ms per 1,000 arrivals
+  Float16 coordinates: packed 536.2 B/post; RAM 539.0 B/post; recall 100.0%; midpoint recall 99.8%; local midpoint 99.8%; NRMSE 0.0002; membership error 0.02%; IG regret 0.000000 bits; encode/maintain 0.1/0.2 ms per 1,000 arrivals
+  8-bit coordinates: packed 284.2 B/post; RAM 287.8 B/post; recall 94.0%; midpoint recall 94.2%; local midpoint 79.3%; NRMSE 0.0175; membership error 13.97%; IG regret 0.000000 bits; encode/maintain 0.6/0.2 ms per 1,000 arrivals
+  4-bit coordinates: packed 156.2 B/post; RAM 159.8 B/post; recall 38.1%; midpoint recall 34.3%; local midpoint 35.0%; NRMSE 0.1409; membership error 28.26%; IG regret 0.001295 bits; encode/maintain 1.2/0.2 ms per 1,000 arrivals
+  Centroid + 8-bit residual: packed 296.8 B/post; RAM 301.0 B/post; recall 97.5%; midpoint recall 97.3%; local midpoint 89.4%; NRMSE 0.0120; membership error 7.88%; IG regret 0.000000 bits; encode/maintain 0.7/0.3 ms per 1,000 arrivals
+  Centroid + 4-bit residual: packed 168.8 B/post; RAM 173.0 B/post; recall 74.4%; midpoint recall 75.0%; local midpoint 67.2%; NRMSE 0.0808; membership error 17.50%; IG regret 0.000217 bits; encode/maintain 1.3/0.3 ms per 1,000 arrivals
+  Frozen local PPCA r4: packed 102.8 B/post; RAM 106.4 B/post; recall 14.3%; midpoint recall 11.4%; local midpoint 16.8%; NRMSE 0.3022; membership error 32.45%; IG regret 0.002555 bits; encode/maintain 0.7/0.3 ms per 1,000 arrivals
+  Frozen batch PCA r16: packed 300.5 B/post; RAM 304.0 B/post; recall 98.9%; midpoint recall 99.7%; local midpoint 90.0%; NRMSE 0.0121; membership error 7.84%; IG regret 0.000000 bits; encode/maintain 18.4/0.6 ms per 1,000 arrivals
+  PPCA r4 + 4-bit residual: packed 234.8 B/post; RAM 239.8 B/post; recall 89.1%; midpoint recall 88.9%; local midpoint 78.4%; NRMSE 0.0319; membership error 12.47%; IG regret 0.000045 bits; encode/maintain 1.5/0.5 ms per 1,000 arrivals
+  Adaptive rank / 8-bit fallback: packed 258.9 B/post; RAM 262.5 B/post; recall 95.1%; midpoint recall 96.2%; local midpoint 84.9%; NRMSE 0.0175; membership error 10.93%; IG regret 0.000000 bits; encode/maintain 22.2/0.5 ms per 1,000 arrivals
+  Inherited basis + innovations: packed 102.8 B/post; RAM 105.8 B/post; recall 96.0%; midpoint recall 95.9%; local midpoint 83.8%; NRMSE 0.0302; membership error 11.59%; IG regret 0.000000 bits; encode/maintain 3.3/1.8 ms per 1,000 arrivals
+  Sequential PPCA r4: packed 74.6 B/post; RAM 89.8 B/post; recall 11.8%; midpoint recall 8.8%; local midpoint 15.4%; NRMSE 0.3821; membership error 41.12%; IG regret 0.004467 bits; encode/maintain 0.5/8.3 ms per 1,000 arrivals
+
+Smallest measured codec at >= 90% local midpoint recall / 2D moving clusters: Float16 coordinates (28.4 B/post).
+Smallest measured codec at >= 70% local midpoint recall / 2D moving clusters: Float16 coordinates (28.4 B/post).
+Smallest measured codec at >= 90% local midpoint recall / Stable rank-four manifold: Inherited basis + innovations (44.8 B/post).
+Smallest measured codec at >= 70% local midpoint recall / Stable rank-four manifold: 4-bit coordinates (44.5 B/post).
+Smallest measured codec at >= 90% local midpoint recall / Rotating rank-four manifold: Centroid + 4-bit residual (48.3 B/post).
+Smallest measured codec at >= 70% local midpoint recall / Rotating rank-four manifold: 4-bit coordinates (44.5 B/post).
+Smallest measured codec at >= 90% local midpoint recall / Rotating, long retention: Adaptive rank / 8-bit fallback (55.4 B/post).
+Smallest measured codec at >= 70% local midpoint recall / Rotating, long retention: 4-bit coordinates (44.5 B/post).
+Smallest measured codec at >= 90% local midpoint recall / Sixteen active directions: 8-bit coordinates (60.5 B/post).
+Smallest measured codec at >= 70% local midpoint recall / Sixteen active directions: 4-bit coordinates (44.5 B/post).
+Smallest measured codec at >= 90% local midpoint recall / Bluesky 100,000: Frozen batch PCA r16 (300.5 B/post).
+Smallest measured codec at >= 70% local midpoint recall / Bluesky 100,000: Inherited basis + innovations (102.8 B/post).
+
+These are choices among tested settings using measured mean recall, not validated universal thresholds.
+Recall compares exact Euclidean neighbors; midpoint proposals are within-leaf arithmetic midpoints, not Fermat paths.
+Synthetic IG does not validate human recommendations. The shared density model is unchanged across codecs.
+All UUID inventories passed; complete expiry released every decoder and inherited basis chain.
+Latent-only methods can lose discarded directions even when their codes are immutable.
+Timings include Julia allocation/GC and exclude audits; this is an unoptimized CPU experiment.

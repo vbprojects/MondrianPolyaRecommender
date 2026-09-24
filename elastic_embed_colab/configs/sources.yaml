@@ -1,0 +1,165 @@
+# Equal availability estimates are placeholders: replace with your source counts.
+# Immutable dataset revisions verified when preparing this runner.
+sources:
+- dataset: HuggingFaceFW/fineweb
+  config: sample-10BT
+  revision: 9bb295ddab0e05d785b879661af7260fed5140fc
+  split: train
+  language: en
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb
+- dataset: HuggingFaceFW/fineweb-2
+  config: spa_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: es
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: por_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: pt
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: fra_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: fr
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: deu_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: de
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: rus_Cyrl
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: ru
+  script: Cyrl
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: arb_Arab
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: ar
+  script: Arab
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: hin_Deva
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: hi
+  script: Deva
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: ben_Beng
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: bn
+  script: Beng
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: cmn_Hani
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: zh
+  script: Hani
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: jpn_Jpan
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: ja
+  script: Jpan
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: kor_Hang
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: ko
+  script: Hang
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: ind_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: id
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: tur_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: tr
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: vie_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: vi
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: tha_Thai
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: th
+  script: Thai
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: swh_Latn
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: sw
+  script: Latn
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- dataset: HuggingFaceFW/fineweb-2
+  config: tel_Telu
+  revision: af9c13333eb981300149d5ca60a8e9d659b276b9
+  split: train
+  language: te
+  script: Telu
+  available_count: 1000000
+  license: ODC-By-1.0 plus Common Crawl terms
+  terms_reference: https://huggingface.co/datasets/HuggingFaceFW/fineweb-2

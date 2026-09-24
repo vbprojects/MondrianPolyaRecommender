@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mondrian–Pólya / a forgetting landscape</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#101922;color:#e5eef5}*{box-sizing:border-box}body{max-width:1500px;margin:auto;padding:30px}h1{font-size:clamp(24px,3vw,38px);font-weight:550;margin:6px 0 12px}p{color:#afbfce;line-height:1.6;margin:8px 0}.eyebrow{color:#5dd7cd;font-size:12px;letter-spacing:2px;text-transform:uppercase}.controls{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:25px 0;padding:18px;background:#1b2935;border-radius:12px}button,select{background:#314656;color:white;border:1px solid #597285;border-radius:6px;padding:8px 14px;font:inherit;cursor:pointer}button{min-width:90px}input[type=range]{flex:1;min-width:160px;accent-color:#5dd7cd}label{font-size:13px}#phase{color:#5dd7cd}.panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.panel{background:#182530;border:1px solid #2b3d4c;border-radius:12px;padding:16px}h2{font-size:18px;margin:0 0 4px}.sub{min-height:44px;font-size:13px}canvas.map{display:block;width:100%;aspect-ratio:1;border-radius:5px}.stats{display:flex;gap:14px;justify-content:space-between;font-size:13px;padding-top:12px;color:#bacbd9}.stats strong{display:block;color:white;font-size:19px;font-weight:500}.legend{display:flex;align-items:center;gap:14px;margin:20px 0;font-size:13px;color:#b5c5d3}.gradient{height:12px;width:200px;background:linear-gradient(90deg,#142e4f,#19869b,#77ceaa,#fbe4a2)}.chartbox{margin-top:20px;background:#182530;padding:18px;border-radius:12px}#chart{width:100%;height:140px;display:block}.note{font-size:13px;max-width:1050px}.tag{font-size:12px;color:#ffc47c;margin-left:12px}@media(max-width:850px){.panels{grid-template-columns:1fr}body{padding:18px}.sub{min-height:0}.panel{max-width:580px;width:100%;margin:auto}}
+</style>
+<div class="eyebrow">Julia experiment 01 · seed __SEED__</div>
+<h1>A probability landscape that forgets</h1>
+<p>Watch random 2D clusters move, disappear, and return. Compare evidence decay with deliberate changes to the partition.</p>
+<div class="controls">
+<button id="play">Play</button><button id="reset">Reset</button>
+<input id="time" aria-label="Simulation time" type="range" min="0" max="300" value="0" step="1">
+<span id="clock"></span>
+<label>Speed <select id="speed"><option value="180">Slow</option><option value="80" selected>Normal</option><option value="25">Fast</option></select></label>
+<label><input id="points" type="checkbox" checked> Points</label><label><input id="cuts" type="checkbox" checked> Cuts</label>
+</div>
+<p><span id="phase"></span><span id="maintenance" class="tag"></span></p>
+<div class="panels">
+<section class="panel"><h2>Fixed · no decay</h2><p class="sub">Retained observations keep their full weight.</p><canvas class="map" id="map0" width="640" height="640" aria-label="Fixed partition without decay"></canvas><div class="stats" id="stats0"></div></section>
+<section class="panel"><h2>Fixed · time decay</h2><p class="sub">Evidence fades; installed cuts stay in place.</p><canvas class="map" id="map1" width="640" height="640" aria-label="Fixed partition with time decay"></canvas><div class="stats" id="stats1"></div></section>
+<section class="panel"><h2>Adaptive · time decay</h2><p class="sub">Replay and collapse weak subtrees every 10 ticks.</p><canvas class="map" id="map2" width="640" height="640" aria-label="Adaptive partition with time decay"></canvas><div class="stats" id="stats2"></div></section>
+</div>
+<div class="legend"><span>Density 0</span><div class="gradient"></div><span>≥ 16 · shared log(1 + density) scale</span></div>
+<div class="chartbox"><h2>Effective evidence over time</h2><p class="note">Gray: no decay · turquoise: decay (both trees have the same total). Click to seek. Shaded area: silence.</p><canvas id="chart" width="1400" height="180" aria-label="Effective mass timeline"></canvas></div>
+<p class="note">Unit square [0, 1]², y increases upward. Each active tick admits 12 points. All models retain the same latest 600 observations; FIFO eviction removes their current contribution. Decay half-life: 12 ticks. Points fade by age in the decay panels. Density always integrates to one; fading evidence returns predictions toward the uniform prior.</p>
+<p class="note">This is a complete-partition Mondrian–Pólya toy. The adaptive policy prunes a seeded random scaffold using an evidence threshold of 8 and a cap of 127 nodes. Rebuilds may change density. The time slider plays Julia-computed snapshots; it does not retrain the model. Scores are independent pre-update mean log densities; higher is better and uniform = 0.</p>
+<script>
+const frames=__FRAMES__;
+const $=id=>document.getElementById(id);let index=0,playing=false,last=0;
+const palette=[[20,46,79],[25,134,155],[119,206,170],[251,228,162]];
+function color(v){const a=Math.max(0,Math.min(1,Math.log1p(v)/Math.log(17)))*3,i=Math.min(2,Math.floor(a)),f=a-i;return `rgb(${palette[i].map((c,j)=>Math.round(c*(1-f)+palette[i+1][j]*f)).join(',')})`}
+function drawMap(j,f){const c=$('map'+j),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);
+for(const [x0,x1,y0,y1,d] of f.models[j].cells){ctx.fillStyle=color(d);ctx.fillRect(x0*w,(1-y1)*h,(x1-x0)*w,(y1-y0)*h);if($('cuts').checked){ctx.strokeStyle='rgba(6,18,29,.6)';ctx.lineWidth=1;ctx.strokeRect(x0*w,(1-y1)*h,(x1-x0)*w,(y1-y0)*h)}}
+if($('points').checked)for(const [x,y,weight] of f.points){ctx.fillStyle=`rgba(255,255,255,${j===0?.6:.8*weight})`;ctx.beginPath();ctx.arc(x*w,(1-y)*h,2.5,0,Math.PI*2);ctx.fill()}
+const m=f.models[j];$('stats'+j).innerHTML=`<span>Evidence<strong>${m.mass.toFixed(1)}</strong></span><span>Leaves<strong>${m.cells.length}</strong></span><span>Audit score<strong>${m.score===null?'—':m.score.toFixed(2)}</strong></span>`}
+function drawChart(){const c=$('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height,p=32,sx=t=>p+t/300*(w-2*p),sy=v=>h-24-v/600*(h-40);ctx.clearRect(0,0,w,h);ctx.fillStyle='#253845';ctx.fillRect(sx(161),8,sx(240)-sx(161),h-32);ctx.font='13px system-ui';ctx.fillStyle='#a8bdcd';for(const v of [0,300,600]){ctx.fillText(v,0,sy(v)+4);ctx.strokeStyle='#304350';ctx.beginPath();ctx.moveTo(p,sy(v));ctx.lineTo(w-p,sy(v));ctx.stroke()}for(const [j,col] of [[0,'#9eaec0'],[1,'#5dd7cd']]){ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();frames.forEach((f,i)=>{const x=sx(f.time),y=sy(f.models[j].mass);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}ctx.strokeStyle='#ffe3a2';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(sx(index),8);ctx.lineTo(sx(index),h-24);ctx.stroke();for(const t of [0,60,120,160,240,300])ctx.fillText(t,sx(t)-8,h-5)}
+function render(){const f=frames[index];$('time').value=index;$('clock').textContent=`t = ${f.time}`;$('phase').textContent=f.phase;$('maintenance').textContent=f.rebuild?'Rebuild tick':'';for(let j=0;j<3;j++)drawMap(j,f);drawChart()}
+function pause(){playing=false;$('play').textContent='Play'}
+$('play').onclick=()=>{if(index===300)index=0;playing=!playing;$('play').textContent=playing?'Pause':'Play';last=0;render()};$('reset').onclick=()=>{pause();index=0;render()};$('time').oninput=e=>{pause();index=+e.target.value;render()};$('points').onchange=render;$('cuts').onchange=render;
+$('chart').onclick=e=>{pause();const r=e.target.getBoundingClientRect();index=Math.max(0,Math.min(300,Math.round(((e.clientX-r.left)/r.width*1400-32)/(1400-64)*300)));render()};
+function animate(ts){if(playing&&ts-last>=+$('speed').value){last=ts;index=Math.min(300,index+1);render();if(index===300)pause()}requestAnimationFrame(animate)}render();requestAnimationFrame(animate);
+</script>
+</html>

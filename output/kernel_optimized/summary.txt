@@ -1,0 +1,23 @@
+Optimized whole-tree benchmark
+AMD Ryzen 7 7800X3D 8-Core Processor / NVIDIA GeForce RTX 4070 SUPER
+Whole supplied-batch fit, including topology planning and transfers. Warmup/data loading/audits excluded. Trial order rotated; no concurrent benchmark jobs.
+Julia 1.13.0, 1 Julia thread, 1 BLAS thread, Float64 statistics.
+
+2D one-minute decay | Reference Julia | 0.01575 | 0.01524–0.01614 | 666,796 | 1.00× | 70
+2D one-minute decay | Scheduled KA CPU | 0.00330 | 0.00320–0.00429 | 3,179,524 | 4.77× | 70
+2D one-minute decay | Scheduled KA GPU | 0.01331 | 0.01263–0.01445 | 788,929 | 1.18× | 70
+2D static | Reference Julia | 0.01853 | 0.01832–0.01946 | 566,699 | 1.00× | 256
+2D static | Scheduled KA CPU | 0.00776 | 0.00731–0.01047 | 1,352,564 | 2.39× | 256
+2D static | Scheduled KA GPU | 0.01675 | 0.01582–0.01783 | 626,962 | 1.11× | 256
+256D 10k six-hour decay | Reference Julia | 0.19461 | 0.16009–0.20964 | 51,384 | 1.00× | 54
+256D 10k six-hour decay | Scheduled KA CPU | 0.07830 | 0.07690–0.08370 | 127,714 | 2.49× | 54
+256D 10k six-hour decay | Scheduled KA GPU | 0.11612 | 0.11503–0.11649 | 86,115 | 1.68× | 54
+256D 89,798 six-hour decay | Reference Julia | 1.48879 | 1.48688–1.50935 | 60,316 | 1.00× | 292
+256D 89,798 six-hour decay | Scheduled KA CPU | 0.87599 | 0.87182–0.89742 | 102,510 | 1.70× | 292
+256D 89,798 six-hour decay | Scheduled KA GPU | 0.55292 | 0.53879–0.57699 | 162,407 | 2.69× | 292
+256D 100k static | Reference Julia | 1.50417 | 1.46885–1.52777 | 66,482 | 1.00× | 569
+256D 100k static | Scheduled KA CPU | 0.93609 | 0.90147–0.95333 | 106,828 | 1.61× | 569
+256D 100k static | Scheduled KA GPU | 0.53536 | 0.53433–0.54006 | 186,789 | 2.81× | 569
+
+Identical topology and reservoirs asserted in every measured fit. Worst errors: {'probability_tv': 6.233444207852379e-15, 'max_mean_error': 8.460968309000142e-14, 'max_covariance_error': 7.222793398340467e-14}
+Scheduled execution uses the original topology rules and computes each region in causal order; it fits a supplied batch. Per-post callback and external eigensolver modes retain the event driver.

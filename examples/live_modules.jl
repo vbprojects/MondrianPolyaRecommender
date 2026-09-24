@@ -1,0 +1,5 @@
+include("../src/PostRecords.jl")
+include("../src/LeafLatentTree.jl")
+include("../src/LeafTreeKernels.jl")
+include("../src/LiveIndex.jl")
+include("../src/ArrowPostStore.jl")

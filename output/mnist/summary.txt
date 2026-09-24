@@ -1,0 +1,8 @@
+MNIST: 60000 training / 10000 test images. 784 original UInt8 pixels (0..255). Flattening only.
+Training-only adaptive Mondrian-style heuristic; Pólya prior kappa=2. Same prototype as Bluesky, not exact Mondrian process.
+Support fixed a priori at [0,255]^784. No time decay. Ancestor residuals processed in original training file order.
+Labels used only AFTER fitting for histograms and training-leaf majority diagnostics; test labels never affect fit or predictions.
+Classification is a post-hoc majority readout, not a supervised tree or a calibrated class model.
+method,nodes,active_leaves,model_bytes,fit_seconds,train_purity,test_accuracy,integral_error,mean_test_log_density
+reference,1949,975,24770680,0.451734895,0.5528,0.5532,1.1102230246251565e-16,-4333.458218387127
+ancestor residual,1949,347,24864720,0.039621638,0.49116666666666664,0.4963,2.220446049250313e-16,-4335.618158568898

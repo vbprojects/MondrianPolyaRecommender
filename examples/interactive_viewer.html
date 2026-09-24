@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Explore your interests</title>
+<style>body{background:#111722;color:#edf1f7;font:17px system-ui;margin:0}main{max-width:760px;margin:45px auto;padding:0 22px}h1{font-size:28px}p{line-height:1.6}.muted{color:#aab6c7;font-size:14px}article{background:#1c2635;border:1px solid #344052;border-radius:16px;padding:26px;margin:24px 0}#text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:21px;min-height:110px}button{border:1px solid #526178;border-radius:9px;background:#26364b;color:white;padding:12px 20px;font:inherit;cursor:pointer;margin:5px}button:disabled{opacity:.4;cursor:default}#like{background:#24634f}#dislike{background:#70413e}details{margin:24px 0}.bar{height:8px;background:#334257;border-radius:4px;overflow:hidden}.bar span{height:100%;display:block;background:#7ba8f0}#status{min-height:24px}a{color:#9dc4ff}</style>
+<main><h1>Explore your interests</h1><p>Would you want to see more posts like this? Your answer helps choose the next one.</p><p class="muted">Historical Bluesky posts · local experiment · your ratings stay in this browser</p>
+<article><p class="muted" id="meta"></p><p id="text"></p></article>
+<div><button id="like">Like</button><button id="dislike">Dislike</button><button id="skip">Skip</button></div><p id="status" class="muted" aria-live="polite"></p>
+<div><button id="undo">Undo last action</button><button id="reset">Start over</button><button id="download">Download ratings</button></div>
+<details><summary>What is the experiment learning?</summary><p class="muted">The model considers possible interest regions in an ancestor-residual tree. It chooses among a fixed pool of real posts by expected information gain: which post's like/dislike response would best distinguish those regions? It is exploring, so it will sometimes show posts it expects you to dislike.</p><p class="muted">The response model assumes nearby content is more likely to appeal to you. A dislike downweights nearby hypotheses; it does not eliminate a whole branch. Updates are softened to avoid locking in too quickly. These assumptions may not describe your interests.</p><p id="diagnostics" class="muted"></p><div class="bar"><span id="concentration"></span></div><p class="muted">The bar shows concentration relative to the starting belief, not accuracy or confidence that we know your interests. Skip gives no preference feedback. Text is displayed as archived; no posts are published or liked on Bluesky.</p></details>
+</main><script id="dataset" type="application/json">__DATA__</script><script>
+'use strict';
+const D=JSON.parse(document.getElementById('dataset').textContent), $=id=>document.getElementById(id);
+const key='mondrian-local-ratings-'+D.version;
+const entropy=p=>p.reduce((s,v)=>s-(v>0?v*Math.log(v):0),0);
+const binary=p=>-p*Math.log(p)-(1-p)*Math.log1p(-p);
+const H=D.likelihood.map(v=>v.map(binary));
+const unique=[]; const seenText=new Set();
+D.posts.forEach((p,i)=>{if(!seenText.has(p.text)){unique.push(i);seenText.add(p.text)}});
+let history=[],belief=D.prior.slice(),current=-1,choice=null,storageOK=true;
+try{const saved=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(saved)){const seen=new Set();history=saved.filter(e=>e&&Number.isInteger(e.index)&&unique.includes(e.index)&&['like','dislike','skip'].includes(e.action)&&!seen.has(e.index)&&seen.add(e.index));}}catch(e){storageOK=false}
+function update(p,L,positive){const next=p.map((v,h)=>v*Math.sqrt(positive?L[h]:1-L[h]));const z=next.reduce((a,b)=>a+b,0);return next.map((v,h)=>.99*v/z+.01*D.prior[h])}
+function rebuild(){belief=D.prior.slice();for(const e of history)if(e.action!=='skip')belief=update(belief,D.likelihood[e.index],e.action==='like')}
+function select(){const shown=new Set(history.map(e=>e.index));let best=null;for(const i of unique){if(shown.has(i))continue;let pred=0,conditional=0;const L=D.likelihood[i];for(let h=0;h<belief.length;h++){pred+=belief[h]*L[h];conditional+=belief[h]*H[i][h]}const gain=Math.max(0,binary(pred)-conditional);if(!best||gain>best.gain)best={index:i,gain,pred}}return best}
+function persist(){try{localStorage.setItem(key,JSON.stringify(history))}catch(e){storageOK=false}}
+function render(){rebuild();choice=select();current=choice?choice.index:-1;const ratings=history.filter(e=>e.action!=='skip').length;
+$('status').textContent=ratings+' ratings · '+history.length+' posts seen'+(storageOK?' · saved locally':' · storage unavailable; download ratings to keep them');
+$('undo').disabled=!history.length;for(const id of ['like','dislike','skip'])$(id).disabled=current<0;
+if(current<0){$('meta').textContent='Session complete';$('text').textContent='You have seen every post in this demo pool. Download your ratings or start over.';return}
+const post=D.posts[current];$('text').textContent=post.text;$('meta').textContent=(post.author||'Bluesky post')+' · '+(post.created_at||'');
+const initial=entropy(D.prior),now=entropy(belief);$('concentration').style.width=(100*Math.max(0,Math.min(1,1-now/initial)))+'%';
+$('diagnostics').textContent=belief.length+' possible regions · '+unique.length+' candidate posts · effective regions: '+Math.exp(now).toFixed(1)+' · predicted like: '+(100*choice.pred).toFixed(0)+'% · expected information: '+(choice.gain/Math.LN2).toFixed(3)+' bits';}
+function answer(action){if(current<0)return;history.push({index:current,embedding_row:D.posts[current].embedding_row,action,time:new Date().toISOString(),predicted_like:choice.pred,information_bits:choice.gain/Math.LN2});persist();render()}
+$('like').onclick=()=>answer('like');$('dislike').onclick=()=>answer('dislike');$('skip').onclick=()=>answer('skip');
+$('undo').onclick=()=>{history.pop();persist();render()};$('reset').onclick=()=>{if(confirm('Clear this session and start over?')){history=[];persist();render()}};
+$('download').onclick=()=>{const blob=new Blob([JSON.stringify({version:D.version,policy:'ancestor residual graph information gain; tempered updates',history},null,2)],{type:'application/json'});const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='interest-ratings.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+render();
+</script></html>

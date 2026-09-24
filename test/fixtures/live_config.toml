@@ -1,0 +1,11 @@
+[index]
+dimension = 256
+rank = 4
+half_life = 30.0
+retention_seconds = 86400.0
+max_leaves = 8
+split_after = 24
+reservoir_cap = 24
+codec_batch = 32
+merge_below = 2.0
+merge_interval = 10.0

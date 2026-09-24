@@ -1,0 +1,9 @@
+Seed: 42; 300 time units; half-life: 12; cache cap: 600; node cap: 127.
+Maximum exact leaf probability normalization error: 6.661338147750939e-16
+Mean independent pre-update audit log density (higher is better; uniform baseline = 0):
+  Fixed / no decay: 0.6835
+  Fixed / decay: 0.9666
+  Adaptive / decay: 0.8325
+These are single-stream diagnostics, not statistical evidence of superiority.
+CSV model_bytes measures retained Julia object size, not process RSS or peak rebuild memory.
+Rebuilds temporarily retain old/new trees and compacted nodes; HTML history is offline export storage.

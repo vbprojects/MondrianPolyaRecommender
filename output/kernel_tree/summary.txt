@@ -1,0 +1,15 @@
+Kernel tree comparison: reference / KA CPU+LAPACK / KA NVIDIA+cuSOLVER
+Times include per-event allocation, transfers, and synchronization; compilation warmup excluded.
+
+2D static | Reference Julia | 128 leaves | 0.016s | identical cuts: True | probability TV: 0 | max mean error: 0 | max covariance error: 2.17e-19
+2D static | KA CPU + LAPACK | 128 leaves | 0.212s | identical cuts: True | probability TV: 1.45e-16 | max mean error: 6.27e-16 | max covariance error: 1.95e-16
+2D static | KA NVIDIA + cuSOLVER | 128 leaves | 7.809s | identical cuts: True | probability TV: 2.35e-16 | max mean error: 1.62e-15 | max covariance error: 1.18e-15
+2D five-minute decay | Reference Julia | 128 leaves | 0.017s | identical cuts: True | probability TV: 0 | max mean error: 0 | max covariance error: 2.17e-19
+2D five-minute decay | KA CPU + LAPACK | 128 leaves | 0.222s | identical cuts: True | probability TV: 0 | max mean error: 1.11e-16 | max covariance error: 3.1e-17
+2D five-minute decay | KA NVIDIA + cuSOLVER | 128 leaves | 7.499s | identical cuts: True | probability TV: 1.32e-18 | max mean error: 2.65e-15 | max covariance error: 1.39e-16
+2D one-minute decay | Reference Julia | 74 leaves | 0.020s | identical cuts: True | probability TV: 0 | max mean error: 0 | max covariance error: 1.08e-19
+2D one-minute decay | KA CPU + LAPACK | 74 leaves | 0.190s | identical cuts: True | probability TV: 0 | max mean error: 0 | max covariance error: 4.22e-19
+2D one-minute decay | KA NVIDIA + cuSOLVER | 74 leaves | 7.021s | identical cuts: True | probability TV: 1.67e-16 | max mean error: 1.11e-16 | max covariance error: 5.56e-18
+256D Bluesky static | Reference Julia | 60 leaves | 0.035s | identical cuts: True | probability TV: 0 | max mean error: 0 | max covariance error: 1.27e-17
+256D Bluesky static | KA CPU + LAPACK | 60 leaves | 0.869s | identical cuts: True | probability TV: 4.61e-16 | max mean error: 2.3e-15 | max covariance error: 1.31e-15
+256D Bluesky static | KA NVIDIA + cuSOLVER | 60 leaves | 3.494s | identical cuts: True | probability TV: 1.37e-15 | max mean error: 5.37e-15 | max covariance error: 7.36e-15

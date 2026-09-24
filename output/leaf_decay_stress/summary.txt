@@ -1,0 +1,10 @@
+105,000 arrivals per run, 120 simulated minutes, 15-minute silence, abrupt topic switches at 40 and 90 minutes, rotating anisotropic clusters; three seeds. PPCA rank 1 in 2D.
+
+Mean across three seeds (checkpoint metrics averaged within each run):
+No decay: final leaves 1024.0; final memory 1.072 MiB; mean mass TV 0.0661; mean recent-mean distance 0.4107; final effective mass 105000.0
+5-minute half-life: final leaves 669.7; final memory 0.710 MiB; mean mass TV 0.0309; mean recent-mean distance 0.1354; final effective mass 7201.6
+1-minute half-life: final leaves 295.3; final memory 0.315 MiB; mean mass TV 0.0119; mean recent-mean distance 0.0262; final effective mass 1443.2
+
+Maximum relative mass conservation error: 1.1e-15
+Maximum weighted mean conservation error: 3.93e-15
+No merging, pruning, daily expiration, or GPU optimization. Memory does not shrink just because weights fade.

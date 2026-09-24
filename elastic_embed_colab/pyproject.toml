@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mondrian-elastic-embed"
+version = "0.1.0"
+description = "Experimental Qwen to KDA Matryoshka distillation runners"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "PyYAML>=6", "torch>=2.7"]
+
+[project.optional-dependencies]
+colab = ["transformers==4.57.6", "datasets>=3.3,<5", "accelerate>=1.2,<2", "safetensors>=0.5", "huggingface-hub>=0.34,<1", "onnx>=1.17,<2", "onnxruntime>=1.20,<2", "einops>=0.8", "sentencepiece", "pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["elastic_embed*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

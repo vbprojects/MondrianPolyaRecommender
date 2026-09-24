@@ -1,0 +1,22 @@
+Adaptive-tree compression experiment / seed 42
+Synthetic 36-hour stream; 294400 total admitted events; 2000 base events per 15-minute tick.
+Current hour + preceding 23 hourly buckets. Six-hour decay half-life. 127 candidate nodes.
+Each model represents ALL events in the same retained buckets. No 600-point cap.
+Maximum normalized-density integral error: 5.551115123125783e-16
+Maximum cross-method effective-mass difference: 0.0
+
+Method | peak reachable model MiB | mean exact L1 vs replay | mean held-out log density | ingest seconds | maintenance seconds
+Full-day replay | 7.1273 | 0.0000 | 0.7053 | 0.0171 | 0.7728
+Spatial histogram | 0.0776 | 0.0451 | 0.7035 | 0.0127 | 0.0387
+Microclusters | 0.1606 | 0.0711 | 0.7020 | 0.0343 | 0.0273
+Ancestor residuals | 0.0562 | 0.1423 | 0.6430 | 0.0235 | 0.0122
+Leaf-local MPPCA | 0.4170 | 0.0131 | 0.7034 | 0.1469 | 1.6443
+
+Histogram: 16×16 bins/hour (6144 maximum). Microclusters: at most 64/hour (1536 maximum).
+MPPCA: at most 8 rank-one components per owning tree node per hour (127*8*24 hard upper bound); prospective splits retain historical mixtures at ancestors, soft online assignments; covariance moments retained, not original vectors or per-post codes. Gaussian-to-tree allocation uses 64-node bounded quadrature. In 2D rank-one PPCA spans full covariance; this is not a high-dimensional codec benchmark.
+Residual: 127×24 evidence slots. Budgets are NOT byte-matched; compare measured memory and error together.
+L1 is integrated exactly over intersecting leaf rectangles, before display rounding. Residual is a different density model.
+Held-out probes are independent and evaluated after the tick's update, not prequential. One stream and one scaffold seed; no uncertainty interval.
+Timing excludes generation, audit queries, metrics and HTML export; includes backend ingestion or maintenance respectively. Not a production benchmark.
+Reachable object size includes scaffolds, active tree and temporal summaries; excludes text, IDs, encoder, archive and viewer history.
+maintenance_allocated_bytes is cumulative allocation during a call, NOT peak live memory or RSS.

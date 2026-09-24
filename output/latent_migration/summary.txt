@@ -1,0 +1,91 @@
+Repeated per-post latent-code migration
+5 synthetic geometries × 3 seeds × 80 grow/idle-merge cycles; 384 fixed UUIDs per run.
+12 policies share each actual adaptive PPCA tree. Float32/16 alter stored codes; arithmetic remains Float64.
+NRMSE is RMS reconstruction error normalized by the original centered data spread. Recall@10 uses 24 fixed original-vector queries per run.
+Final merged-state means across 3 seeds (ranges are seed minimum–maximum).
+
+Full-rank 2D control
+  Sequential Float64: NRMSE 1.6296e-14 [1.36408e-14, 1.93853e-14], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Sequential Float32: NRMSE 4.1651e-07 [3.97448e-07, 4.4462e-07], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Sequential Float16: NRMSE 0.00323603 [0.00315894, 0.00330756], variance 0.999927, recall@10 98.6% [98.3%, 99.2%]
+  Jitter 0.1%: NRMSE 0.0151968 [0.0151093, 0.0152914], variance 0.999445, recall@10 95.4% [93.8%, 96.7%]
+  Jitter 1%: NRMSE 0.151547 [0.150504, 0.15219], variance 1.01858, recall@10 62.8% [58.7%, 69.2%]
+  Restore variance with noise: NRMSE 2.20922 [2.06936, 2.39289], variance 5.83005, recall@10 3.8% [2.5%, 5.4%]
+  Remap from initial code: NRMSE 9.71213e-15 [7.38659e-15, 1.32058e-14], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Refresh originals every 10 cycles: NRMSE 2.31889e-16 [1.93282e-16, 2.81496e-16], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Original-vector oracle: NRMSE 2.31889e-16 [1.93282e-16, 2.81496e-16], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Frozen initial decoder: NRMSE 9.91682e-15 [7.70008e-15, 1.33553e-14], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Map singular-value floor 0.1: NRMSE 1.38151e-14 [1.20641e-14, 1.61567e-14], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Orthogonal transport: NRMSE 5.51624e-15 [4.17616e-15, 6.40924e-15], variance 1, recall@10 100.0% [100.0%, 100.0%]
+
+Stable rank-four manifold
+  Sequential Float64: NRMSE 0.000250232 [0.000249165, 0.00025096], variance 0.999998, recall@10 100.0% [100.0%, 100.0%]
+  Sequential Float32: NRMSE 0.000250233 [0.000249165, 0.00025096], variance 0.999998, recall@10 100.0% [100.0%, 100.0%]
+  Sequential Float16: NRMSE 0.00381852 [0.00374434, 0.00391541], variance 0.999695, recall@10 98.9% [98.7%, 99.2%]
+  Jitter 0.1%: NRMSE 0.0178338 [0.0176821, 0.0179735], variance 1.00068, recall@10 96.1% [94.6%, 97.5%]
+  Jitter 1%: NRMSE 0.179905 [0.177559, 0.183646], variance 1.04184, recall@10 71.2% [68.3%, 73.3%]
+  Restore variance with noise: NRMSE 1.89522 [1.84895, 1.93465], variance 4.63562, recall@10 5.6% [3.8%, 7.1%]
+  Remap from initial code: NRMSE 0.000250227 [0.000249159, 0.000250955], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Refresh originals every 10 cycles: NRMSE 0.000250227 [0.000249159, 0.000250955], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Original-vector oracle: NRMSE 0.000250227 [0.000249159, 0.000250955], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Frozen initial decoder: NRMSE 0.000248512 [0.00024701, 0.000249939], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Map singular-value floor 0.1: NRMSE 0.000250232 [0.000249165, 0.00025096], variance 0.999998, recall@10 100.0% [100.0%, 100.0%]
+  Orthogonal transport: NRMSE 0.000250227 [0.000249159, 0.000250955], variance 1, recall@10 100.0% [100.0%, 100.0%]
+
+Nearly equal spectrum
+  Sequential Float64: NRMSE 1.01906 [1.00671, 1.03123], variance 1.303e-30, recall@10 3.1% [2.5%, 4.2%]
+  Sequential Float32: NRMSE 1.01906 [1.00671, 1.03123], variance 1.49871e-30, recall@10 2.5% [2.5%, 2.5%]
+  Sequential Float16: NRMSE 1.01904 [1.00671, 1.03119], variance 1.19338e-30, recall@10 2.5% [2.5%, 2.5%]
+  Jitter 0.1%: NRMSE 1.01907 [1.00671, 1.0313], variance 4.16004e-06, recall@10 2.5% [2.1%, 3.3%]
+  Jitter 1%: NRMSE 1.01827 [1.00703, 1.03064], variance 0.00442278, recall@10 2.5% [2.5%, 2.5%]
+  Restore variance with noise: NRMSE 1.33492 [1.32954, 1.34482], variance 0.783952, recall@10 2.5% [2.5%, 2.5%]
+  Remap from initial code: NRMSE 0.87056 [0.848626, 0.885788], variance 0.245604, recall@10 12.6% [12.1%, 13.3%]
+  Refresh originals every 10 cycles: NRMSE 0.706544 [0.69787, 0.716513], variance 0.504238, recall@10 30.3% [29.6%, 31.7%]
+  Original-vector oracle: NRMSE 0.706544 [0.69787, 0.716513], variance 0.504238, recall@10 30.3% [29.6%, 31.7%]
+  Frozen initial decoder: NRMSE 0.710116 [0.707724, 0.714094], variance 0.499099, recall@10 29.2% [26.2%, 30.8%]
+  Map singular-value floor 0.1: NRMSE 1.01893 [1.00659, 1.03102], variance 1.11042e-30, recall@10 2.2% [1.3%, 3.8%]
+  Orthogonal transport: NRMSE 1.71134 [1.65396, 1.74169], variance 1.75232, recall@10 3.5% [2.5%, 4.6%]
+
+Very thin direction
+  Sequential Float64: NRMSE 5.76045e-05 [5.39778e-05, 6.12691e-05], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Sequential Float32: NRMSE 5.7606e-05 [5.39794e-05, 6.12705e-05], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Sequential Float16: NRMSE 0.00336144 [0.00318839, 0.0035004], variance 0.999887, recall@10 99.4% [99.2%, 99.6%]
+  Jitter 0.1%: NRMSE 0.0144424 [0.0142237, 0.0146372], variance 0.999543, recall@10 96.4% [95.8%, 97.1%]
+  Jitter 1%: NRMSE 0.145005 [0.142155, 0.146993], variance 1.03, recall@10 67.8% [66.2%, 70.4%]
+  Restore variance with noise: NRMSE 2.10208 [2.08801, 2.1128], variance 5.29106, recall@10 3.3% [2.5%, 4.2%]
+  Remap from initial code: NRMSE 5.88827e-06 [3.02746e-06, 7.99362e-06], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Refresh originals every 10 cycles: NRMSE 5.88805e-06 [3.02745e-06, 7.99331e-06], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Original-vector oracle: NRMSE 5.88805e-06 [3.02745e-06, 7.99331e-06], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Frozen initial decoder: NRMSE 2.88256e-06 [2.87515e-06, 2.88642e-06], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Map singular-value floor 0.1: NRMSE 5.7595e-05 [5.39778e-05, 6.12691e-05], variance 1, recall@10 100.0% [100.0%, 100.0%]
+  Orthogonal transport: NRMSE 4.68644e-05 [2.76554e-05, 7.26875e-05], variance 1, recall@10 100.0% [100.0%, 100.0%]
+
+Rotating 256D manifold
+  Sequential Float64: NRMSE 0.293999 [0.292948, 0.295241], variance 0.52235, recall@10 62.4% [59.6%, 65.8%]
+  Sequential Float32: NRMSE 0.293999 [0.292948, 0.295241], variance 0.52235, recall@10 62.4% [59.6%, 65.8%]
+  Sequential Float16: NRMSE 0.293843 [0.29285, 0.295012], variance 0.522628, recall@10 62.2% [58.7%, 66.2%]
+  Jitter 0.1%: NRMSE 0.294427 [0.292836, 0.296074], variance 0.522397, recall@10 63.1% [60.4%, 65.8%]
+  Jitter 1%: NRMSE 0.328575 [0.327627, 0.329079], variance 0.54493, recall@10 52.9% [50.0%, 54.6%]
+  Restore variance with noise: NRMSE 1.81085 [1.78052, 1.85536], variance 3.66794, recall@10 5.8% [4.2%, 7.5%]
+  Remap from initial code: NRMSE 0.0751199 [0.0740917, 0.0766263], variance 0.994303, recall@10 99.4% [99.2%, 100.0%]
+  Refresh originals every 10 cycles: NRMSE 0.0751197 [0.0740915, 0.076626], variance 0.994392, recall@10 99.4% [99.2%, 100.0%]
+  Original-vector oracle: NRMSE 0.0751197 [0.0740915, 0.076626], variance 0.994392, recall@10 99.4% [99.2%, 100.0%]
+  Frozen initial decoder: NRMSE 0.0747867 [0.0737082, 0.0762862], variance 0.994429, recall@10 99.4% [99.2%, 100.0%]
+  Map singular-value floor 0.1: NRMSE 0.293999 [0.292948, 0.295241], variance 0.52235, recall@10 62.4% [59.6%, 65.8%]
+  Orthogonal transport: NRMSE 0.0752782 [0.074216, 0.0768694], variance 0.989382, recall@10 99.0% [98.8%, 99.6%]
+
+Trajectory check: rotating 256D geometry returns to the original plane at cycle 40, and its original orientation at cycle 80.
+  Cycle 40 / Sequential Float64: NRMSE 1.8480, recall@10 0.14%.
+  Cycle 40 / Orthogonal transport: NRMSE 1.9985, recall@10 0.28%.
+  Cycle 40 / Remap from initial code: NRMSE 0.0752, recall@10 99.44%.
+A strong final-cycle score can hide earlier geometric drift. Read the full trajectory, not only the endpoint.
+
+Actual tree operations across runs: 6378 splits and 6378 merges.
+Maximum mapping equivalence error: 6.661e-16.
+Maximum forward-map singular value: 1.000000000000007.
+Maximum basis orthogonality error: 2.679e-09.
+All checkpoint UUID sets were complete and duplicate-free; all reconstructed vectors were finite.
+Noise variants are heuristics, not proofs about every perturbation strategy. This experiment does not validate actual recommendation quality.
+Oracle/periodic refresh read original audit vectors; anchor/frozen policies retain the initial decoder and original compressed code.
+Persistent old posts intentionally outlive the decay window. Decoder-version storage growth under continuing new post arrivals is not measured.
+Very low variance causes near-tied neighbor distances, so small recall differences after collapse are not robust.

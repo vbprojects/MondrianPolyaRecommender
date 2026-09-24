@@ -1,0 +1,54 @@
+# One bounded round by default; pass --loop for continuous polling/subscriptions.
+store = "data/live"
+poll_interval = 5
+
+[index]
+dimension = 256
+rank = 4
+half_life = 21600.0
+retention_seconds = 86400.0
+max_leaves = 128
+split_after = 256
+reservoir_cap = 64
+codec_batch = 256
+merge_below = 8.0
+merge_interval = 3600.0
+
+[[sources]]
+name = "bluesky-public"
+kind = "bluesky"
+
+# Each source needs a distinct stable name; the name owns its persisted cursor.
+# To use a legacy Jetstream endpoint, set legacy=true and its /subscribe URL.
+#
+# [[sources]]
+# name = "nostr-damus"
+# kind = "nostr"
+# url = "wss://relay.damus.io"
+# lookback_seconds = 60
+#
+# [[sources]]
+# name = "mastodon-public"
+# kind = "mastodon"
+# origin = "https://mastodon.social"
+# token_env = "MASTODON_TOKEN" # optional if public preview is enabled
+#
+# [[sources]]
+# name = "mastodon-events"
+# kind = "mastodon_stream"
+# origin = "https://mastodon.social"
+# url = "wss://streaming.mastodon.social/api/v1/streaming"
+# token_env = "MASTODON_TOKEN" # user token required for streaming
+# stream = "public"
+#
+# [[sources]]
+# name = "activitypub-actor"
+# kind = "activitypub"
+# actor = "https://your-selected-instance.example/users/someone"
+#
+# [[sources]]
+# name = "threads-julia"
+# kind = "threads"
+# query = "Julia programming"
+# token_env = "THREADS_ACCESS_TOKEN"
+# lookback_seconds = 3600

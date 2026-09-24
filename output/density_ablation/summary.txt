@@ -1,0 +1,187 @@
+Within-leaf density ablation with one shared centroid + 8-bit post codec
+4 workloads x 3 seeds x 2 radii x (two proposal-only settings with 4 methods, one complete setting with 6 methods) x 100 trials = 33,600 trials.
+First 90%-confidence stop; correct only within independent true-geometry radius. Budget 80 responses.
+Failure-penalized responses = first correct stop, otherwise 81 (not an uncensored mean).
+Simulator geometry: Euclidean or independent held-out kNN density/Fermat graph. All feedback synthetic.
+Shared static scaffold, exact Pólya region masses, fresh online fits in final leaves. No dynamic mass-transfer ablation.
+
+Axis-aligned 2D topics / Euclidean: proposals only / radius 0.05
+  Uniform leaf: correct 51.3%, false 5.7%, exhausted 43.0%; consumed 61.6, correct-only 47.0, penalized 63.5; scored 13.6/response, fallback 12.8%
+  Diagonal Gaussian: correct 66.0%, false 11.3%, exhausted 22.7%; consumed 49.9, correct-only 40.7, penalized 54.4; scored 24.8/response, fallback 0.0%
+  PPCA rank 4: correct 67.0%, false 6.7%, exhausted 26.3%; consumed 51.7, correct-only 41.5, penalized 54.5; scored 24.7/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 67.3%, false 7.0%, exhausted 25.7%; consumed 51.4, correct-only 41.4, penalized 54.3; scored 25.8/response, fallback 0.0%
+
+Axis-aligned 2D topics / Euclidean: proposals only / radius 0.1
+  Uniform leaf: correct 91.0%, false 9.0%, exhausted 0.0%; consumed 16.2, correct-only 16.2, penalized 22.0; scored 16.2/response, fallback 0.1%
+  Diagonal Gaussian: correct 90.0%, false 10.0%, exhausted 0.0%; consumed 11.8, correct-only 11.7, penalized 18.6; scored 28.7/response, fallback 0.0%
+  PPCA rank 4: correct 89.0%, false 10.7%, exhausted 0.3%; consumed 11.9, correct-only 11.6, penalized 19.2; scored 28.8/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 92.0%, false 8.0%, exhausted 0.0%; consumed 12.0, correct-only 12.1, penalized 17.6; scored 29.4/response, fallback 0.0%
+
+Axis-aligned 2D topics / Fermat: proposals only / radius 0.05
+  Uniform leaf: correct 85.3%, false 7.7%, exhausted 7.0%; consumed 27.7, correct-only 23.7, penalized 32.1; scored 15.7/response, fallback 2.1%
+  Diagonal Gaussian: correct 89.3%, false 8.7%, exhausted 2.0%; consumed 21.6, correct-only 19.9, penalized 26.4; scored 28.3/response, fallback 0.0%
+  PPCA rank 4: correct 90.3%, false 8.0%, exhausted 1.7%; consumed 22.2, correct-only 21.2, penalized 27.0; scored 28.4/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 87.7%, false 9.7%, exhausted 2.7%; consumed 21.9, correct-only 20.1, penalized 27.6; scored 28.8/response, fallback 0.0%
+
+Axis-aligned 2D topics / Fermat: proposals only / radius 0.1
+  Uniform leaf: correct 94.3%, false 5.7%, exhausted 0.0%; consumed 3.0, correct-only 3.0, penalized 7.4; scored 18.6/response, fallback 0.0%
+  Diagonal Gaussian: correct 94.7%, false 5.3%, exhausted 0.0%; consumed 3.0, correct-only 3.0, penalized 7.1; scored 29.9/response, fallback 0.0%
+  PPCA rank 4: correct 93.7%, false 6.3%, exhausted 0.0%; consumed 3.0, correct-only 3.0, penalized 7.9; scored 30.0/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 95.0%, false 5.0%, exhausted 0.0%; consumed 3.1, correct-only 3.1, penalized 7.0; scored 30.4/response, fallback 0.0%
+
+Axis-aligned 2D topics / Fermat: density + proposals / radius 0.05
+  Uniform leaf: correct 57.7%, false 5.0%, exhausted 37.3%; consumed 54.3, correct-only 38.6, penalized 56.6; scored 13.4/response, fallback 8.7%
+  Diagonal Gaussian: correct 86.0%, false 9.7%, exhausted 4.3%; consumed 26.9, correct-only 25.2, penalized 33.0; scored 27.8/response, fallback 0.0%
+  PPCA rank 4: correct 83.0%, false 10.3%, exhausted 6.7%; consumed 26.6, correct-only 23.0, penalized 32.9; scored 28.0/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 72.3%, false 11.3%, exhausted 16.3%; consumed 43.8, correct-only 37.1, penalized 49.2; scored 26.7/response, fallback 0.0%
+  Actual posts + diagonal density: correct 83.7%, false 10.3%, exhausted 6.0%; consumed 26.4, correct-only 23.5, penalized 32.9; scored 28.5/response, fallback 0.0%
+  Actual posts + PPCA density: correct 82.7%, false 12.0%, exhausted 5.3%; consumed 26.6, correct-only 23.6, penalized 33.5; scored 28.6/response, fallback 0.0%
+
+Axis-aligned 2D topics / Fermat: density + proposals / radius 0.1
+  Uniform leaf: correct 95.3%, false 4.7%, exhausted 0.0%; consumed 11.1, correct-only 11.0, penalized 14.2; scored 16.8/response, fallback 0.3%
+  Diagonal Gaussian: correct 95.0%, false 5.0%, exhausted 0.0%; consumed 3.9, correct-only 3.8, penalized 7.7; scored 29.8/response, fallback 0.0%
+  PPCA rank 4: correct 93.7%, false 6.3%, exhausted 0.0%; consumed 3.5, correct-only 3.4, penalized 8.3; scored 29.9/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 93.3%, false 6.7%, exhausted 0.0%; consumed 8.3, correct-only 8.2, penalized 13.1; scored 29.7/response, fallback 0.0%
+  Actual posts + diagonal density: correct 95.7%, false 4.3%, exhausted 0.0%; consumed 3.9, correct-only 3.9, penalized 7.2; scored 30.3/response, fallback 0.0%
+  Actual posts + PPCA density: correct 94.0%, false 6.0%, exhausted 0.0%; consumed 3.5, correct-only 3.5, penalized 8.1; scored 30.3/response, fallback 0.0%
+
+Correlated 2D topics / Euclidean: proposals only / radius 0.05
+  Uniform leaf: correct 46.0%, false 5.0%, exhausted 49.0%; consumed 64.6, correct-only 48.7, penalized 66.2; scored 14.0/response, fallback 18.4%
+  Diagonal Gaussian: correct 61.3%, false 7.7%, exhausted 31.0%; consumed 55.1, correct-only 43.2, penalized 57.8; scored 24.5/response, fallback 0.0%
+  PPCA rank 4: correct 59.7%, false 9.7%, exhausted 30.7%; consumed 55.4, correct-only 44.3, penalized 59.1; scored 24.5/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 62.3%, false 7.3%, exhausted 30.3%; consumed 55.9, correct-only 44.8, penalized 58.4; scored 25.2/response, fallback 0.0%
+
+Correlated 2D topics / Euclidean: proposals only / radius 0.1
+  Uniform leaf: correct 91.3%, false 8.7%, exhausted 0.0%; consumed 19.0, correct-only 19.3, penalized 24.6; scored 14.8/response, fallback 0.8%
+  Diagonal Gaussian: correct 87.7%, false 12.3%, exhausted 0.0%; consumed 13.8, correct-only 14.1, penalized 22.3; scored 28.7/response, fallback 0.0%
+  PPCA rank 4: correct 85.7%, false 14.3%, exhausted 0.0%; consumed 13.3, correct-only 13.3, penalized 23.0; scored 28.9/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 88.7%, false 11.3%, exhausted 0.0%; consumed 13.8, correct-only 13.7, penalized 21.3; scored 29.2/response, fallback 0.0%
+
+Correlated 2D topics / Fermat: proposals only / radius 0.05
+  Uniform leaf: correct 92.0%, false 7.3%, exhausted 0.7%; consumed 21.1, correct-only 20.2, penalized 25.1; scored 14.4/response, fallback 1.1%
+  Diagonal Gaussian: correct 92.0%, false 8.0%, exhausted 0.0%; consumed 16.6, correct-only 16.2, penalized 21.4; scored 28.7/response, fallback 0.0%
+  PPCA rank 4: correct 92.3%, false 7.3%, exhausted 0.3%; consumed 17.0, correct-only 17.0, penalized 21.9; scored 28.8/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 93.3%, false 6.7%, exhausted 0.0%; consumed 17.3, correct-only 17.1, penalized 21.3; scored 29.1/response, fallback 0.0%
+
+Correlated 2D topics / Fermat: proposals only / radius 0.1
+  Uniform leaf: correct 93.3%, false 6.7%, exhausted 0.0%; consumed 1.9, correct-only 1.9, penalized 7.2; scored 18.8/response, fallback 0.0%
+  Diagonal Gaussian: correct 93.3%, false 6.7%, exhausted 0.0%; consumed 1.9, correct-only 1.9, penalized 7.2; scored 30.2/response, fallback 0.0%
+  PPCA rank 4: correct 93.3%, false 6.7%, exhausted 0.0%; consumed 1.9, correct-only 1.9, penalized 7.2; scored 30.2/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 93.7%, false 6.3%, exhausted 0.0%; consumed 1.9, correct-only 1.9, penalized 6.9; scored 30.5/response, fallback 0.0%
+
+Correlated 2D topics / Fermat: density + proposals / radius 0.05
+  Uniform leaf: correct 67.7%, false 7.7%, exhausted 24.7%; consumed 45.1, correct-only 33.4, penalized 48.8; scored 13.8/response, fallback 9.7%
+  Diagonal Gaussian: correct 90.3%, false 9.3%, exhausted 0.3%; consumed 18.3, correct-only 18.0, penalized 24.1; scored 28.5/response, fallback 0.0%
+  PPCA rank 4: correct 91.0%, false 8.0%, exhausted 1.0%; consumed 18.2, correct-only 17.5, penalized 23.2; scored 28.6/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 72.3%, false 11.0%, exhausted 16.7%; consumed 39.6, correct-only 31.6, penalized 45.3; scored 26.9/response, fallback 0.0%
+  Actual posts + diagonal density: correct 90.0%, false 9.3%, exhausted 0.7%; consumed 19.1, correct-only 18.6, penalized 24.9; scored 29.0/response, fallback 0.0%
+  Actual posts + PPCA density: correct 90.7%, false 9.0%, exhausted 0.3%; consumed 19.6, correct-only 18.8, penalized 24.6; scored 29.0/response, fallback 0.0%
+
+Correlated 2D topics / Fermat: density + proposals / radius 0.1
+  Uniform leaf: correct 97.0%, false 3.0%, exhausted 0.0%; consumed 8.1, correct-only 8.2, penalized 10.4; scored 16.4/response, fallback 0.1%
+  Diagonal Gaussian: correct 93.3%, false 6.7%, exhausted 0.0%; consumed 1.9, correct-only 2.0, penalized 7.2; scored 30.2/response, fallback 0.0%
+  PPCA rank 4: correct 93.0%, false 7.0%, exhausted 0.0%; consumed 1.8, correct-only 1.8, penalized 7.4; scored 30.3/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 97.3%, false 2.7%, exhausted 0.0%; consumed 5.9, correct-only 5.9, penalized 7.9; scored 29.9/response, fallback 0.0%
+  Actual posts + diagonal density: correct 93.0%, false 7.0%, exhausted 0.0%; consumed 1.9, correct-only 1.9, penalized 7.4; scored 30.5/response, fallback 0.0%
+  Actual posts + PPCA density: correct 93.0%, false 7.0%, exhausted 0.0%; consumed 1.8, correct-only 1.8, penalized 7.4; scored 30.5/response, fallback 0.0%
+
+Correlated 32D topics / Euclidean: proposals only / radius 0.05
+  Uniform leaf: correct 3.3%, false 0.3%, exhausted 96.3%; consumed 78.9, correct-only 50.8, penalized 80.0; scored 20.6/response, fallback 0.3%
+  Diagonal Gaussian: correct 12.3%, false 0.3%, exhausted 87.3%; consumed 76.6, correct-only 53.2, penalized 77.6; scored 22.4/response, fallback 0.0%
+  PPCA rank 4: correct 15.3%, false 2.0%, exhausted 82.7%; consumed 75.7, correct-only 55.2, penalized 77.0; scored 23.1/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 16.7%, false 1.7%, exhausted 81.7%; consumed 75.2, correct-only 53.4, penalized 76.4; scored 24.3/response, fallback 0.0%
+
+Correlated 32D topics / Euclidean: proposals only / radius 0.1
+  Uniform leaf: correct 3.7%, false 0.3%, exhausted 96.0%; consumed 78.8, correct-only 53.2, penalized 80.0; scored 20.6/response, fallback 0.3%
+  Diagonal Gaussian: correct 13.7%, false 0.7%, exhausted 85.7%; consumed 76.1, correct-only 53.3, penalized 77.2; scored 22.5/response, fallback 0.0%
+  PPCA rank 4: correct 16.3%, false 2.0%, exhausted 81.7%; consumed 75.3, correct-only 54.8, penalized 76.7; scored 23.2/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 18.7%, false 1.7%, exhausted 79.7%; consumed 74.9, correct-only 54.4, penalized 76.0; scored 24.4/response, fallback 0.0%
+
+Correlated 32D topics / Fermat: proposals only / radius 0.05
+  Uniform leaf: correct 2.3%, false 0.3%, exhausted 97.3%; consumed 79.1, correct-only 44.3, penalized 80.1; scored 20.8/response, fallback 0.2%
+  Diagonal Gaussian: correct 28.3%, false 1.7%, exhausted 70.0%; consumed 71.3, correct-only 50.6, penalized 72.4; scored 22.6/response, fallback 0.0%
+  PPCA rank 4: correct 32.7%, false 2.3%, exhausted 65.0%; consumed 69.0, correct-only 48.8, penalized 70.5; scored 23.7/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 29.0%, false 3.0%, exhausted 68.0%; consumed 70.3, correct-only 48.5, penalized 71.6; scored 24.8/response, fallback 0.0%
+
+Correlated 32D topics / Fermat: proposals only / radius 0.1
+  Uniform leaf: correct 14.7%, false 1.0%, exhausted 84.3%; consumed 74.3, correct-only 42.1, penalized 75.3; scored 21.3/response, fallback 0.2%
+  Diagonal Gaussian: correct 55.0%, false 4.7%, exhausted 40.3%; consumed 58.7, correct-only 44.7, penalized 61.0; scored 24.1/response, fallback 0.0%
+  PPCA rank 4: correct 55.3%, false 6.7%, exhausted 38.0%; consumed 56.3, correct-only 42.1, penalized 59.5; scored 25.0/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 53.3%, false 5.7%, exhausted 41.0%; consumed 58.6, correct-only 43.3, penalized 60.9; scored 25.9/response, fallback 0.0%
+
+Correlated 32D topics / Fermat: density + proposals / radius 0.05
+  Uniform leaf: correct 4.3%, false 0.3%, exhausted 95.3%; consumed 78.7, correct-only 52.1, penalized 79.7; scored 20.9/response, fallback 0.2%
+  Diagonal Gaussian: correct 20.3%, false 10.7%, exhausted 69.0%; consumed 71.3, correct-only 47.4, penalized 74.2; scored 23.1/response, fallback 0.0%
+  PPCA rank 4: correct 23.3%, false 7.3%, exhausted 69.3%; consumed 71.7, correct-only 51.1, penalized 74.0; scored 24.0/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 25.3%, false 2.3%, exhausted 72.3%; consumed 71.8, correct-only 49.8, penalized 73.1; scored 24.8/response, fallback 0.0%
+  Actual posts + diagonal density: correct 24.0%, false 7.7%, exhausted 68.3%; consumed 70.4, correct-only 47.2, penalized 72.9; scored 25.3/response, fallback 0.0%
+  Actual posts + PPCA density: correct 21.7%, false 7.0%, exhausted 71.3%; consumed 72.5, correct-only 54.2, penalized 75.2; scored 25.1/response, fallback 0.0%
+
+Correlated 32D topics / Fermat: density + proposals / radius 0.1
+  Uniform leaf: correct 17.0%, false 6.0%, exhausted 77.0%; consumed 72.2, correct-only 46.9, penalized 75.2; scored 21.7/response, fallback 0.1%
+  Diagonal Gaussian: correct 31.0%, false 23.3%, exhausted 45.7%; consumed 59.2, correct-only 41.8, penalized 68.8; scored 24.6/response, fallback 0.0%
+  PPCA rank 4: correct 40.7%, false 19.7%, exhausted 39.7%; consumed 59.0, correct-only 43.9, penalized 65.9; scored 25.3/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 45.0%, false 18.3%, exhausted 36.7%; consumed 55.4, correct-only 41.3, penalized 63.1; scored 26.5/response, fallback 0.0%
+  Actual posts + diagonal density: correct 38.0%, false 22.3%, exhausted 39.7%; consumed 57.8, correct-only 42.7, penalized 66.4; scored 26.6/response, fallback 0.0%
+  Actual posts + PPCA density: correct 40.0%, false 17.3%, exhausted 42.7%; consumed 60.2, correct-only 45.1, penalized 66.6; scored 26.3/response, fallback 0.0%
+
+Bluesky 100,000 / Euclidean: proposals only / radius 0.05
+  Uniform leaf: correct 0.0%, false 0.0%, exhausted 100.0%; consumed 80.0, correct-only n/a, penalized 81.0; scored 27.8/response, fallback 0.0%
+  Diagonal Gaussian: correct 4.0%, false 0.3%, exhausted 95.7%; consumed 79.0, correct-only 57.2, penalized 80.0; scored 28.0/response, fallback 0.0%
+  PPCA rank 4: correct 8.0%, false 0.0%, exhausted 92.0%; consumed 77.6, correct-only 49.8, penalized 78.5; scored 27.2/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 6.7%, false 0.7%, exhausted 92.7%; consumed 77.8, correct-only 46.9, penalized 78.7; scored 28.1/response, fallback 0.0%
+
+Bluesky 100,000 / Euclidean: proposals only / radius 0.1
+  Uniform leaf: correct 0.0%, false 0.0%, exhausted 100.0%; consumed 80.0, correct-only n/a, penalized 81.0; scored 27.8/response, fallback 0.0%
+  Diagonal Gaussian: correct 4.0%, false 0.3%, exhausted 95.7%; consumed 79.0, correct-only 57.2, penalized 80.0; scored 28.0/response, fallback 0.0%
+  PPCA rank 4: correct 8.0%, false 0.0%, exhausted 92.0%; consumed 77.6, correct-only 49.8, penalized 78.5; scored 27.2/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 6.7%, false 0.7%, exhausted 92.7%; consumed 77.8, correct-only 46.9, penalized 78.7; scored 28.1/response, fallback 0.0%
+
+Bluesky 100,000 / Fermat: proposals only / radius 0.05
+  Uniform leaf: correct 0.3%, false 0.0%, exhausted 99.7%; consumed 79.9, correct-only 47.0, penalized 80.9; scored 27.7/response, fallback 0.0%
+  Diagonal Gaussian: correct 15.3%, false 2.0%, exhausted 82.7%; consumed 74.8, correct-only 49.9, penalized 76.2; scored 27.7/response, fallback 0.0%
+  PPCA rank 4: correct 19.3%, false 2.7%, exhausted 78.0%; consumed 72.1, correct-only 43.6, penalized 73.8; scored 26.9/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 19.0%, false 1.0%, exhausted 80.0%; consumed 72.9, correct-only 44.2, penalized 74.0; scored 27.7/response, fallback 0.0%
+
+Bluesky 100,000 / Fermat: proposals only / radius 0.1
+  Uniform leaf: correct 0.7%, false 0.0%, exhausted 99.3%; consumed 79.9, correct-only 58.0, penalized 80.8; scored 27.7/response, fallback 0.0%
+  Diagonal Gaussian: correct 20.3%, false 1.3%, exhausted 78.3%; consumed 72.4, correct-only 44.9, penalized 73.7; scored 27.9/response, fallback 0.0%
+  PPCA rank 4: correct 25.0%, false 3.0%, exhausted 72.0%; consumed 68.6, correct-only 38.3, penalized 70.3; scored 27.2/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 24.0%, false 2.0%, exhausted 74.0%; consumed 69.9, correct-only 41.1, penalized 71.4; scored 28.0/response, fallback 0.0%
+
+Bluesky 100,000 / Fermat: density + proposals / radius 0.05
+  Uniform leaf: correct 0.3%, false 0.0%, exhausted 99.7%; consumed 79.8, correct-only 16.0, penalized 80.8; scored 27.5/response, fallback 0.0%
+  Diagonal Gaussian: correct 12.3%, false 2.7%, exhausted 85.0%; consumed 75.1, correct-only 44.0, penalized 76.4; scored 27.4/response, fallback 0.0%
+  PPCA rank 4: correct 16.7%, false 1.7%, exhausted 81.7%; consumed 73.7, correct-only 45.0, penalized 75.0; scored 26.7/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 12.7%, false 19.7%, exhausted 67.7%; consumed 65.5, correct-only 28.9, penalized 74.4; scored 27.8/response, fallback 0.0%
+  Actual posts + diagonal density: correct 20.0%, false 5.7%, exhausted 74.3%; consumed 70.3, correct-only 40.9, penalized 73.0; scored 27.8/response, fallback 0.0%
+  Actual posts + PPCA density: correct 22.0%, false 3.0%, exhausted 75.0%; consumed 71.4, correct-only 47.0, penalized 73.5; scored 27.8/response, fallback 0.0%
+
+Bluesky 100,000 / Fermat: density + proposals / radius 0.1
+  Uniform leaf: correct 0.3%, false 0.0%, exhausted 99.7%; consumed 79.8, correct-only 16.0, penalized 80.8; scored 27.5/response, fallback 0.0%
+  Diagonal Gaussian: correct 15.0%, false 2.7%, exhausted 82.3%; consumed 74.1, correct-only 43.9, penalized 75.4; scored 27.5/response, fallback 0.0%
+  PPCA rank 4: correct 17.3%, false 5.7%, exhausted 77.0%; consumed 71.4, correct-only 42.0, penalized 74.2; scored 26.9/response, fallback 0.0%
+  Actual posts; no Gaussian: correct 17.3%, false 15.0%, exhausted 67.7%; consumed 65.5, correct-only 30.3, penalized 72.2; scored 27.8/response, fallback 0.0%
+  Actual posts + diagonal density: correct 21.7%, false 6.3%, exhausted 72.0%; consumed 69.3, correct-only 39.5, penalized 72.0; scored 27.9/response, fallback 0.0%
+  Actual posts + PPCA density: correct 22.3%, false 4.7%, exhausted 73.0%; consumed 70.5, correct-only 44.9, penalized 72.9; scored 27.9/response, fallback 0.0%
+
+Paired PPCA minus actual-post sampling, strict radius, complete density/Fermat setting:
+  Axis-aligned 2D topics: success delta +10.7%, stratified-bootstrap 95% interval [+5.3%, +16.0%]; penalized-response delta -16.37 [-19.61, -13.31].
+  Correlated 2D topics: success delta +18.7%, stratified-bootstrap 95% interval [+13.3%, +24.7%]; penalized-response delta -22.01 [-25.80, -18.57].
+  Correlated 32D topics: success delta -2.0%, stratified-bootstrap 95% interval [-7.7%, +4.3%]; penalized-response delta +0.92 [-1.27, +2.93].
+  Bluesky 100,000: success delta +4.0%, stratified-bootstrap 95% interval [-0.7%, +9.0%]; penalized-response delta +0.59 [-1.54, +2.59].
+
+Direct-post sampling held fixed: PPCA density minus alternative density, strict radius:
+  Axis-aligned 2D topics / versus Actual posts; no Gaussian: success delta +10.3% [+5.0%, +16.0%]; false-stop delta +0.7% [-4.0%, +5.3%]; penalized-response delta -15.68 [-18.90, -12.51].
+  Axis-aligned 2D topics / versus Actual posts + diagonal density: success delta -1.0% [-5.0%, +2.7%]; false-stop delta +1.7% [-1.3%, +4.7%]; penalized-response delta +0.61 [-1.08, +2.29].
+  Correlated 2D topics / versus Actual posts; no Gaussian: success delta +18.3% [+12.7%, +24.3%]; false-stop delta -2.0% [-6.3%, +2.0%]; penalized-response delta -20.66 [-24.27, -17.23].
+  Correlated 2D topics / versus Actual posts + diagonal density: success delta +0.7% [-2.3%, +3.7%]; false-stop delta -0.3% [-3.0%, +2.7%]; penalized-response delta -0.26 [-2.27, +1.58].
+  Correlated 32D topics / versus Actual posts; no Gaussian: success delta -3.7% [-10.0%, +2.3%]; false-stop delta +4.7% [+1.7%, +7.7%]; penalized-response delta +2.10 [+0.39, +4.04].
+  Correlated 32D topics / versus Actual posts + diagonal density: success delta -2.3% [-7.7%, +3.3%]; false-stop delta -0.7% [-4.3%, +3.3%]; penalized-response delta +2.32 [+0.52, +4.26].
+  Bluesky 100,000 / versus Actual posts; no Gaussian: success delta +9.3% [+5.0%, +14.0%]; false-stop delta -16.7% [-21.3%, -12.3%]; penalized-response delta -0.89 [-2.76, +1.03].
+  Bluesky 100,000 / versus Actual posts + diagonal density: success delta +2.0% [-3.3%, +7.0%]; false-stop delta -2.7% [-5.7%, +0.0%]; penalized-response delta +0.52 [-1.23, +2.60].
+
+Bootstrap resamples paired trials within each fixed seed; intervals do not represent new-corpus/landscape uncertainty.
+The direct-post baseline uses uniform tree density in the complete setting. Proposal-only settings share reference geometry.
+Local density PDFs are box-truncated; diagonal normalization analytic, PPCA normalization estimated with 4096 Monte Carlo draws.
+All methods share the same per-case codec SHA256 and post identities. No original embedding files were changed.

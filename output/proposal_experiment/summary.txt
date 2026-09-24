@@ -1,0 +1,13 @@
+Paired proposal experiment; exact vectors, fixed 32-proposal budget, 60 trials x 60 steps per method/world.
+Confidence interval: trial bootstrap; first-hit failures assigned 61 (capped score, not mean uncensored stopping time).
+world | method | success at 0.5 posterior mass | mean final true mass | MAP accuracy
+chord | tree_uniform | 0.033 | 0.118 | 0.200
+chord | micro_diagonal | 0.400 | 0.359 | 0.517
+chord | mppca | 0.433 | 0.396 | 0.600
+chord | local_real_posts | 0.367 | 0.361 | 0.433
+chord | random_posts | 0.133 | 0.235 | 0.417
+fermat_graph | tree_uniform | 0.183 | 0.232 | 0.350
+fermat_graph | micro_diagonal | 0.433 | 0.413 | 0.450
+fermat_graph | mppca | 0.533 | 0.487 | 0.550
+fermat_graph | local_real_posts | 0.700 | 0.565 | 0.717
+fermat_graph | random_posts | 0.450 | 0.399 | 0.533

@@ -1,0 +1,30 @@
+Live ingestion validation — Julia 1.13.0
+
+28,705 assertions passed across 8 suites, including CPU and NVIDIA RTX 4070 SUPER kernels.
+Mixed-platform fixture: 66 retained posts, 67 identities, 5 frozen decoder blocks, 2 leaves, 1 cut.
+CPU/GPU decoded vectors: byte-identical.
+CPU/GPU low-rank scatter-factor maximum absolute difference: 2.22e-16.
+Arrow restart/replay: unchanged post IDs and codes; no repeated density evidence.
+Julia and independent Python Arrow decoding/routing: matched.
+
+Live Bluesky (multiple bounded runs with restart): 2,220 retained posts, 2,301 catalog identities,
+6 leaves, 5 cuts, 13 frozen decoder blocks.
+Index reachable memory: 3,411,195 bytes.
+Codec numeric arrays, IDs, memberships and centroids: 626,032 bytes.
+One complete Zstd Arrow checkpoint, including text/catalog/tree: 1,133,754 bytes.
+Raw vectors retained only in bounded tree reservoirs: 384.
+Memory excludes Julia/runtime compilation, the Python embedding model, device buffers and temporary checkpoint work.
+Disk figure is one generation; the writer retains two completed generations.
+
+Live Nostr: 10 retained notes, with SHA-256 and BIP-340 signatures verified.
+Mastodon public timeline: selected instance returned HTTP 422, requiring an authenticated user.
+ActivityPub actor outbox: selected instance returned HTTP 401.
+Threads: credentials not configured. Request shape, pagination and normalization tested with fixtures.
+No posts were published and no background ingestion daemon remains running.
+
+Main limits: full snapshots per microbatch, linear retained-ID candidate scans, source-specific
+history/deletion coverage, host-coordinated tree topology, and approximate PPCA rebasing after removals.
+These are integration checks, not a sustained throughput benchmark or relevance evaluation.
+
+Run: julia --project=environments/ingestion examples/ingest_live.jl --config examples/live_sources.toml
+Read: docs/Live_Ingestion.md

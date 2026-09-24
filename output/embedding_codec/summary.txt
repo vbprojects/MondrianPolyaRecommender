@@ -1,0 +1,11 @@
+Frozen local embedding codec comparison
+method | bytes/post (incl shared decoder and IDs) | recall@10 | mean cosine | IG agreement | IG regret bits
+centroid_residual_1bit | 69.05 | 0.020 | 0.8229 | 0.02 | 0.035614
+centroid_residual_2bit | 101.05 | 0.176 | 0.9791 | 0.04 | 0.017433
+centroid_residual_4bit | 165.05 | 0.693 | 0.9993 | 0.56 | 0.001355
+centroid_residual_8bit | 293.05 | 0.955 | 1.0000 | 0.94 | 0.000006
+ppca_rank4_latent_4bit | 79.75 | 0.100 | 0.9621 | 0.02 | 0.023292
+ppca_rank4_latent_8bit | 81.75 | 0.100 | 0.9623 | 0.04 | 0.022282
+ppca_rank4_latent8_tail1 | 127.24 | 0.036 | 0.8367 | 0.00 | 0.033320
+ppca_rank4_latent8_tail2 | 159.24 | 0.239 | 0.9817 | 0.04 | 0.015085
+ppca_rank4_latent8_tail4 | 223.24 | 0.706 | 0.9994 | 0.52 | 0.001345

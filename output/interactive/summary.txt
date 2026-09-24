@@ -1,0 +1,11 @@
+Residual information-gain interactive demo
+Occupied hypothesis leaves: 395
+Candidate posts before text deduplication: 1436
+Prior mass covered by occupied leaves: 1.0
+Likelihood distance scale: 0.6917102897191769
+Graph: symmetric 12-neighbor plus Euclidean MST; shortest paths weighted by a bounded occupancy/area density proxy. Exponent 0.25; area exponent 2 is a heuristic, not estimated intrinsic dimension.
+Candidates: representative nearest leaf mean plus up to 3 seeded random posts per occupied leaf.
+No dimensionality reduction; no microclusters; static corpus and static single-interest hypothesis.
+Likelihood: 0.05+0.9/(1+(distance/scale)^2).
+Posterior updates tempered by exponent 0.5 and mixed with 1% prior after each rating to limit brittle lock-in.
+Information gain uses the untempered binary likelihood; tempered updates make this a heuristic policy.

@@ -1,0 +1,9 @@
+extends: pilot.yaml
+scale: main
+run_dir: runs/main-mohawk
+data:
+  max_examples: 1000000
+training:
+  full_depth_steps: 10000
+  prefix_steps: 1000
+  matryoshka_steps: 10000
