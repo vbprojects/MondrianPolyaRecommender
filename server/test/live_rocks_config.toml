@@ -1,0 +1,15 @@
+mode = "combined"
+store = "../../data/server_rocks_live_validation"
+ingestion_config = "../../examples/live_sources.toml"
+max_events = 64
+source_seconds = 3
+
+[http]
+host = "127.0.0.1"
+port = 8188
+
+[storage]
+backend = "rocksdb"
+managed_budget_mib = 32
+server_budget_mib = 32
+maintenance_interval_seconds = 1

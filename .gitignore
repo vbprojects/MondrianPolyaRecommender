@@ -3,10 +3,18 @@ __pycache__/
 .cache/
 data/
 
+# Generated experiment reports, inspector snapshots and live-run artifacts.
+/output/
+
+# Downloaded encoder payloads; retain social-encoder/notices/ for attribution.
+/social-encoder/backbone/
+/social-encoder/tokenizer/
+
 # Elastic embedder Python build/test artifacts
 *.egg-info/
 .pytest_cache/
 *.json
+!encoder_experiments_colab/09_bert_hash_benchmark_manifest.json
 *.csv
 *.pt
 *.Identifier
@@ -273,3 +281,10 @@ __marimo__/
 *.u32
 *.npz
 *.jls
+*.safetensors
+# Native YAKE reproducibility fixtures and measurements.
+!julia-yake/test/python_reference.json
+!julia-yake/benchmark/results.json
+# Reproducible server environments.
+!server/Manifest.toml
+!server/benchmark/Manifest.toml

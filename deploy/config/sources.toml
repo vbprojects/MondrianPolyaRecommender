@@ -1,0 +1,25 @@
+poll_interval = 5
+
+[index]
+dimension = 256
+rank = 4
+half_life = 21600.0
+retention_seconds = 604800.0
+max_leaves = 128
+split_after = 256
+reservoir_cap = 64
+merge_below = 8.0
+
+[disk]
+format = "f16"
+layout = "append"
+
+[keywords]
+enabled = true
+
+[[sources]]
+name = "bluesky-public"
+kind = "bluesky"
+
+# More source examples: examples/live_sources.toml.
+# Credentials reference environment variable names, not literal token values.

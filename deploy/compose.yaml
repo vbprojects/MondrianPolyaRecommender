@@ -1,0 +1,69 @@
+name: mondrian
+services:
+  mondrian:
+    image: ${MONDRIAN_IMAGE:-mondrian-server:local}
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: server/docker/Dockerfile
+      target: ${MONDRIAN_TARGET:-combined}
+    command: ["--config", "/config/server.toml"]
+    restart: unless-stopped
+    stop_signal: SIGINT
+    stop_grace_period: 2m
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: ${MONDRIAN_MEMORY:-3g}
+    cpus: ${MONDRIAN_CPUS:-2.0}
+    pids_limit: 256
+    environment:
+      JULIA_NUM_THREADS: "2,1"
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "2"
+      # Optional source credentials; values are never baked into the image.
+      MASTODON_TOKEN: ${MASTODON_TOKEN:-}
+      THREADS_ACCESS_TOKEN: ${THREADS_ACCESS_TOKEN:-}
+    ports:
+      - "127.0.0.1:${MONDRIAN_PORT:-8080}:8080"
+    volumes:
+      - data:/data
+      - model-cache:/home/mondrian/.cache/huggingface
+      - ./config:/config:ro
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=536870912,mode=1777
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Opt in with --profile https after configuring DOMAIN and its DNS.
+  caddy:
+    profiles: [https]
+    image: caddy:2.11.4-alpine
+    restart: unless-stopped
+    depends_on:
+      mondrian:
+        condition: service_healthy
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  data:
+  model-cache:
+  caddy-data:
+  caddy-config:

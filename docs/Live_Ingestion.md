@@ -1,4 +1,17 @@
-# Live ingestion, compressed post identity, and Arrow checkpoints
+# Live ingestion
+
+The current default is the [disk-backed live pipeline](Disk_Live_Ingestion.md):
+Float16 vectors, rank-4 PPCA, SQLite publications and per-leaf hashtag
+summaries, using `data/live_disk_gte`. The overnight launcher uses this path.
+The live default is pinned 384D GTE-tiny with float ONNX inference; the original
+Qwen store remains at `data/live_disk` with `examples/live_sources.qwen.toml`.
+
+The sections below document the **legacy Arrow backend** and shared source/identity
+semantics. For those commands, invoke `examples/ingest_arrow_live.jl` directly
+(or add `--storage arrow`) and use the configuration matching the original store.
+The new `examples/live_sources.toml` selects disk storage and seven-day retention.
+
+## Legacy Arrow checkpoints
 
 The Julia ingestion path combines the adaptive tree and leaf PPCA density with **independent frozen centroid + 8-bit residual post codes**. It saves native post identities, text, metadata, codecs, tree state, and source cursors together in Arrow IPC files. CPU is the default; the numerical kernels also run on CUDA. This is a bounded ingestion prototype, with live source readers and restart support, not a claim of complete platform coverage or production firehose throughput.
 
@@ -28,7 +41,7 @@ julia --project=environments/ingestion examples/inspect_live.jl data/live_fixtur
 .venv-embeddings/bin/python scripts/check_live_arrow.py data/live_fixture
 ```
 
-The ONNX bridge uses `futur/Qwen3-Embedding-0.6B-model2vec-onnx` pinned to revision `a3f60a85a2570e7976ea7f2d6505ad3e5152a96f`: normalized 256D Float32 embeddings. A long-lived Python worker provides the existing ONNX runtime and vetted BIP-340 verification via `coincurve`; ingestion, tree updates, codecs, and storage are Julia. Embeddings and Nostr verification share a serialized worker protocol. The worker rejects oversized batches and invalid vectors; it does not log post text.
+The legacy default ONNX bridge uses `futur/Qwen3-Embedding-0.6B-model2vec-onnx` pinned to revision `a3f60a85a2570e7976ea7f2d6505ad3e5152a96f`: normalized 256D Float32 embeddings. A long-lived Python worker provides the existing ONNX runtime and vetted BIP-340 verification via `coincurve`; ingestion, tree updates, codecs, and storage are Julia. Embeddings and Nostr verification share a serialized worker protocol. The worker rejects oversized batches and invalid vectors; it does not log post text.
 
 `--backend cuda` selects GPU tree/codec kernels. `--embedding-device cuda` independently selects GPU ONNX inference using the previously configured GPU Python environment. Neither is required. Defaults are one round, CPU kernels and CPU embeddings. `--rounds N` repeats bounded rounds; `--loop` explicitly runs continuously until interrupted. Source readers take turns, keeping memory bounded and applying backpressure while embedding and saving. No background service is installed.
 

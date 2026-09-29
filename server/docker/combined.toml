@@ -1,0 +1,20 @@
+mode = "combined"
+store = "/data/store"
+ingestion_config = "/app/server/docker/sources.toml"
+embedding_device = "cpu"
+max_events = 256
+source_seconds = 5
+
+[http]
+host = "0.0.0.0"
+port = 8080
+max_body_bytes = 65536
+queue_capacity = 32
+request_timeout_seconds = 5
+cors_origins = []
+
+[storage]
+backend = "auto" # Existing backend is detected; new stores use SQLite.
+managed_budget_mib = 256
+server_budget_mib = 32
+maintenance_interval_seconds = 1

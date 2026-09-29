@@ -1,0 +1,9 @@
+# Optional local SSD mount. Use alongside compose.yaml; see README before use.
+services:
+  mondrian:
+    volumes:
+      - type: bind
+        source: ${MONDRIAN_DATA_DIR:?Set MONDRIAN_DATA_DIR to an existing directory on the mounted data disk}
+        target: /data
+        bind:
+          create_host_path: false

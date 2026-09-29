@@ -1,0 +1,24 @@
+poll_interval = 5
+
+[index]
+dimension = 384
+embedding_model = "TaylorAI/gte-tiny@4cc5e73d86a67c601897257b467187234aa3bca3"
+rank = 4
+half_life = 21600.0
+retention_seconds = 604800.0
+max_leaves = 128
+split_after = 256
+reservoir_cap = 64
+merge_below = 8.0
+
+[disk]
+format = "f16"
+layout = "append"
+
+[keywords]
+enabled = true
+method = "hashtags"
+
+[[sources]]
+name = "bluesky-public"
+kind = "bluesky"

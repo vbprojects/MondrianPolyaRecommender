@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Live Mondrian inspector</title><link rel="stylesheet" href="/inspector.css"><script src="/inspector.js" defer></script></head>
+<body>
+<header><div><div class="eyebrow">MONDRIAN · LIVE OBSERVER</div><h1>A window into the tree</h1><p>Explore the hierarchy, its probability mass, and the posts inside each partition.</p></div><div class="actions"><span id="status" role="status">Connecting…</span><button id="pause">Pause</button><button id="refresh">Refresh</button></div></header>
+<div id="error" role="alert" hidden></div>
+<section class="metrics" aria-label="Live metrics"><article><label>Active posts</label><strong id="active">—</strong></article><article><label>Leaves / cuts</label><strong id="leaves">—</strong></article><article><label>Decayed evidence mass</label><strong id="mass">—</strong></article><article><label>Ingestion / embedding RSS</label><strong id="rss">—</strong></article></section>
+<div class="freshness" id="freshness">Waiting for a committed snapshot.</div>
+<main><section class="map panel"><div class="panel-head"><div><h2>Probability treemap</h2><p>Area = tree probability. Placement preserves ancestry, not embedding distance.</p></div><button id="root">Show root</button></div><div id="breadcrumb"></div><svg id="treemap" viewBox="0 0 900 450" role="img" aria-label="Interactive probability treemap"></svg><div id="map-note" class="note">Click a leaf to inspect it. Select an internal node in the hierarchy to zoom.</div></section>
+<section class="hierarchy panel"><h2>Actual tree hierarchy</h2><p class="note">Each branch is a real cut in the original embedding dimensions.</p><div id="tree"></div></section>
+<section class="detail panel"><div class="panel-head"><h2 id="detail-title">Select a partition</h2><span id="detail-generation" class="note"></span></div><div id="detail-body"><p>Choose a rectangle or a hierarchy row. Leaf summaries and up to six example posts load on demand.</p></div></section>
+<section class="history panel"><div class="panel-head"><h2>While you watch</h2><span id="history-label" class="note">History starts when this page opens.</span></div><svg id="history" viewBox="0 0 900 120" role="img" aria-label="Active post count since opening this page"></svg><p id="transitions" class="note">Observed structural changes: —</p><div id="storage" class="note"></div></section></main>
+<footer>Read-only SQLite snapshots · refresh every 5 seconds · bounded on-demand leaf reads<br>Counts and density are as of the committed clock. RSS is process memory, not managed cache usage. Probability density is not a measure of semantic quality.</footer>
+</body></html>

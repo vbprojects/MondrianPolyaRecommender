@@ -1,0 +1,5 @@
+include("../src/PostRecords.jl")
+include("../src/LeafLatentTree.jl")
+include("../src/DiskCodecs.jl")
+include("../src/KeywordExtraction.jl")
+include("../src/DiskTreeStore.jl")

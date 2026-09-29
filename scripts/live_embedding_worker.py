@@ -11,6 +11,34 @@ import sys
 
 MODEL = 'futur/Qwen3-Embedding-0.6B-model2vec-onnx'
 REVISION = 'a3f60a85a2570e7976ea7f2d6505ad3e5152a96f'
+QWEN_MODEL = MODEL + '@' + REVISION
+GTE_MODEL = 'TaylorAI/gte-tiny@4cc5e73d86a67c601897257b467187234aa3bca3'
+
+
+class GteEncoder:
+    """Pinned float ONNX, benchmark pooling; bound transformer batches separately."""
+    def __init__(self, device):
+        from huggingface_hub import hf_hub_download
+        from tokenizers import Tokenizer
+        from embed_bluesky import make_session
+        repo, revision = GTE_MODEL.split('@')
+        self.tokenizer = Tokenizer.from_file(hf_hub_download(repo, 'tokenizer.json', revision=revision))
+        self.tokenizer.enable_truncation(max_length=256)
+        self.tokenizer.enable_padding(pad_id=self.tokenizer.token_to_id('[PAD]'), pad_token='[PAD]')
+        self.session = make_session(hf_hub_download(repo, 'onnx/model.onnx', revision=revision), device)
+
+    def encode(self, texts):
+        import numpy as np
+        chunks = []
+        for start in range(0, len(texts), 32):
+            tokens = self.tokenizer.encode_batch(texts[start:start + 32], add_special_tokens=True)
+            inputs = {'input_ids': np.asarray([t.ids for t in tokens], dtype=np.int64),
+                      'attention_mask': np.asarray([t.attention_mask for t in tokens], dtype=np.int64),
+                      'token_type_ids': np.asarray([t.type_ids for t in tokens], dtype=np.int64)}
+            hidden = self.session.run(['last_hidden_state'], inputs)[0]
+            mask = inputs['attention_mask'][..., None].astype(np.float32)
+            chunks.append((hidden * mask).sum(axis=1) / mask.sum(axis=1).clip(min=1))
+        return np.concatenate(chunks), self.session.get_providers()[0]
 
 
 def verify_event(event):
@@ -37,9 +65,11 @@ def verify_event(event):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--device', choices=['cpu', 'cuda', 'auto'], default='cpu')
+    parser.add_argument('--model', choices=[QWEN_MODEL, GTE_MODEL], default=QWEN_MODEL)
     args = parser.parse_args()
     model = None
-    print(json.dumps({'ready': True, 'model': MODEL + '@' + REVISION, 'dimension': 256}), flush=True)
+    dimension = 384 if args.model == GTE_MODEL else 256
+    print(json.dumps({'ready': True, 'model': args.model, 'dimension': dimension}), flush=True)
     for line in sys.stdin:
         try:
             if len(line) > 8 * 1024 * 1024:
@@ -58,24 +88,29 @@ def main():
                     raise ValueError('expected 1..1024 nonempty texts, each at most 64 KiB')
                 import numpy as np
                 from embed_bluesky import make_session, pack
-                if model is None:
-                    from huggingface_hub import hf_hub_download
-                    from tokenizers import Tokenizer
-                    tokenizer = Tokenizer.from_file(hf_hub_download(MODEL, 'tokenizer.json', revision=REVISION))
-                    tokenizer.no_padding()
-                    tokenizer.no_truncation()
-                    session = make_session(hf_hub_download(MODEL, 'onnx/model.onnx', revision=REVISION), args.device)
-                    model = tokenizer, session
-                tokenizer, session = model
-                ids = [e.ids for e in tokenizer.encode_batch(texts, add_special_tokens=False)]
-                # The model is a static token-pooling embedding, not a quadratic transformer.
-                raw = session.run(['embeddings'], pack(ids))[0].astype(np.float32)
+                if args.model == GTE_MODEL:
+                    if model is None:
+                        model = GteEncoder(args.device)
+                    raw, provider = model.encode(texts)
+                else:
+                    if model is None:
+                        from huggingface_hub import hf_hub_download
+                        from tokenizers import Tokenizer
+                        tokenizer = Tokenizer.from_file(hf_hub_download(MODEL, 'tokenizer.json', revision=REVISION))
+                        tokenizer.no_padding()
+                        tokenizer.no_truncation()
+                        session = make_session(hf_hub_download(MODEL, 'onnx/model.onnx', revision=REVISION), args.device)
+                        model = tokenizer, session
+                    tokenizer, session = model
+                    ids = [e.ids for e in tokenizer.encode_batch(texts, add_special_tokens=False)]
+                    raw = session.run(['embeddings'], pack(ids))[0].astype(np.float32)
+                    provider = session.get_providers()[0]
                 norms = np.linalg.norm(raw, axis=1, keepdims=True)
-                if raw.shape != (len(texts), 256) or not np.isfinite(raw).all() or (norms <= 0).any():
+                if raw.shape != (len(texts), dimension) or not np.isfinite(raw).all() or (norms <= 0).any():
                     raise ValueError('invalid embedding output')
                 vectors = np.asarray(raw / norms, dtype='<f4')
-                out = {'dimension': 256, 'count': len(texts), 'vectors': base64.b64encode(vectors.tobytes()).decode(),
-                       'model': MODEL + '@' + REVISION, 'provider': session.get_providers()[0]}
+                out = {'dimension': dimension, 'count': len(texts), 'vectors': base64.b64encode(vectors.tobytes()).decode(),
+                       'model': args.model, 'provider': provider}
             else:
                 raise ValueError('unknown worker operation')
             print(json.dumps(out, separators=(',', ':')), flush=True)

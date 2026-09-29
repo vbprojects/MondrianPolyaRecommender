@@ -1,0 +1,6 @@
+{$DOMAIN} {
+    request_body {
+        max_size 65536
+    }
+    reverse_proxy mondrian:8080
+}

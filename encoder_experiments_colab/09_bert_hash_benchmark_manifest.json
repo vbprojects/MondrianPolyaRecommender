@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "status": "design_only_not_runtime_validated",
+  "metadata_checked_date": "2026-09-28",
+  "reference_notebook": "encoder_experiments_colab/07_local_baseline_comparison.ipynb",
+  "reference_notebook_sha256": "37209c2e41b7f4fa303cb7c23460abd3f86714d202d8ca67ecf6fec4a5512a08",
+  "models": [
+    {
+      "id": "NeuML/bert-hash-femto-embeddings",
+      "revision": "8904627df4fd38d59cb1e9c4ff389b909152b627",
+      "group": "hash_embeddings",
+      "native_dimension": 50,
+      "dimensions": [
+        50
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch",
+      "requires_custom_code": true
+    },
+    {
+      "id": "NeuML/bert-hash-pico-embeddings",
+      "revision": "b2bd0ac66c1dd502ba201baffc67e555a9f8f2ea",
+      "group": "hash_embeddings",
+      "native_dimension": 80,
+      "dimensions": [
+        80
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch",
+      "requires_custom_code": true
+    },
+    {
+      "id": "NeuML/bert-hash-nano-embeddings",
+      "revision": "0ce54d70c762703aa3330b9331db02e2bb1f741d",
+      "group": "hash_embeddings",
+      "native_dimension": 128,
+      "dimensions": [
+        128
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch",
+      "requires_custom_code": true
+    },
+    {
+      "id": "NeuML/bert-hash-femto",
+      "revision": "7c69f354d282a573c1dc01d629d8025f9ad66927",
+      "group": "hash_base_control",
+      "native_dimension": 50,
+      "dimensions": [
+        50
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch",
+      "requires_custom_code": true
+    },
+    {
+      "id": "NeuML/bert-hash-pico",
+      "revision": "a77918cf332dbb800576ffbd095822f1f42e0e08",
+      "group": "hash_base_control",
+      "native_dimension": 80,
+      "dimensions": [
+        80
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch",
+      "requires_custom_code": true
+    },
+    {
+      "id": "NeuML/bert-hash-nano",
+      "revision": "7f9b214a163c964331fcc59d9d0e4b06d1db51dd",
+      "group": "hash_base_control",
+      "native_dimension": 128,
+      "dimensions": [
+        128
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch",
+      "requires_custom_code": true
+    },
+    {
+      "id": "futur/Qwen3-Embedding-0.6B-model2vec-onnx",
+      "revision": "a3f60a85a2570e7976ea7f2d6505ad3e5152a96f",
+      "group": "current_static",
+      "native_dimension": 256,
+      "dimensions": [
+        256
+      ],
+      "pooling": "published_export",
+      "backend": "onnxruntime"
+    },
+    {
+      "id": "minishlab/potion-base-8M",
+      "revision": "bf8b056651a2c21b8d2565580b8569da283cab23",
+      "group": "static",
+      "native_dimension": 256,
+      "dimensions": [
+        256
+      ],
+      "pooling": "published_adapter",
+      "backend": "model2vec"
+    },
+    {
+      "id": "sentence-transformers/static-retrieval-mrl-en-v1",
+      "revision": "f60985c706f192d45d218078e49e5a8b6f15283a",
+      "group": "static",
+      "native_dimension": 1024,
+      "dimensions": [
+        1024,
+        256,
+        128
+      ],
+      "pooling": "published_adapter",
+      "backend": "sentence_transformers"
+    },
+    {
+      "id": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "group": "small_transformer",
+      "native_dimension": 384,
+      "dimensions": [
+        384
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch"
+    },
+    {
+      "id": "BAAI/bge-small-en-v1.5",
+      "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+      "group": "small_transformer",
+      "native_dimension": 384,
+      "dimensions": [
+        384
+      ],
+      "pooling": "cls",
+      "backend": "pytorch",
+      "retrieval_query_prefix": "Represent this sentence for searching relevant passages: "
+    },
+    {
+      "id": "TaylorAI/gte-tiny",
+      "revision": "4cc5e73d86a67c601897257b467187234aa3bca3",
+      "group": "small_transformer",
+      "native_dimension": 384,
+      "dimensions": [
+        384
+      ],
+      "pooling": "masked_mean",
+      "backend": "pytorch"
+    },
+    {
+      "id": "local/social-encoder",
+      "path": "social-encoder",
+      "group": "trained_ettin",
+      "manifest_sha256": "97a70cec36a685fc7b1b8b8fe3a5ac5ed10fe6864fdde3d5a7cc76690129d480",
+      "encoder_json_sha256": "34d8f68ab1ab278bc475fc1cbac0a805be6fd6d707a40b141ecfa08a5b7be0df",
+      "native_dimension": 384,
+      "dimensions": [
+        128,
+        256,
+        384
+      ],
+      "exit_depths": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "full_depth": 10,
+      "pooling": "masked_mean_including_special_tokens",
+      "backend": "pytorch",
+      "retrieval_modes": [
+        "same_exit",
+        "full_corpus"
+      ]
+    }
+  ],
+  "datasets": [
+    {
+      "id": "sentence-transformers/NanoBEIR-en",
+      "revision": "beb106fbcfaa599c508c667041bf8c85fd78736b",
+      "tasks": [
+        "NanoNQ",
+        "NanoHotpotQA",
+        "NanoMSMARCO"
+      ],
+      "candidate_policy": "complete_corpus"
+    },
+    {
+      "id": "mteb/twitterurlcorpus-pairclassification",
+      "revision": "ee5d15331196ec9f72e8393779b20098c10e29f6",
+      "file": "test.json.gz"
+    },
+    {
+      "id": "google-research-datasets/go_emotions",
+      "revision": "add492243ff905527e67aeb8b80c082af02207c3",
+      "subset": "simplified"
+    },
+    {
+      "id": "cardiffnlp/tweet_topic_single",
+      "revision": "87b7a0d1c402dbb481db649569c556d9aa27ac05",
+      "split_stems": [
+        "train_2020",
+        "validation_2020",
+        "test_2021"
+      ]
+    }
+  ],
+  "protocol": {
+    "seed": 42,
+    "dtype": "float32",
+    "max_tokens": 256,
+    "normalization": "slice_supported_prefix_then_L2",
+    "search": "exact_cosine",
+    "probe_caps": {
+      "train": 4000,
+      "validation": 512,
+      "test": 1000
+    },
+    "probe_C": 10,
+    "bootstrap_replicates": 10000,
+    "latency_panel_texts": 512,
+    "latency_warmup_batches": 10,
+    "latency_passes": 5,
+    "batch_sizes": [
+      1,
+      8,
+      32,
+      128
+    ],
+    "proposed_noninferiority_margins": {
+      "retrieval_macro_ndcg10": 0.02,
+      "twitter_ap": 0.01
+    }
+  },
+  "runtime_lock": null,
+  "output_directory": "output/bert_hash_benchmark/<configuration-hash>"
+}

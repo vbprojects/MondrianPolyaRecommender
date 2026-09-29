@@ -1,0 +1,3 @@
+# Same pinned CPU encoder dependencies as local ingestion; no CUDA or Arrow stack.
+-r ../../scripts/requirements-embeddings.txt
+coincurve==21.0.0

@@ -1,5 +1,7 @@
 # Mondrian–Pólya time-decay toy (Julia)
 
+**Deploy the API and ingester:** [Docker Compose on Lightsail or another Linux VM](deploy/README.md), with persistent disk storage, CPU inference, optional HTTPS and SQLite/RocksDB support.
+
 **Notebook-first encoder experiments:** [NeoBERT block distillation and pretrained Ettin embedding training](encoder_experiments_colab/README.md), with editable end-to-end Colab notebooks and resumable Google Drive checkpoints.
 
 **Qwen → KDA Colab training:** [First-pass runner guide](elastic_embed_colab/README.md) · [Start notebook](elastic_embed_colab/notebooks/01_teacher_cache.ipynb). Includes teacher caches, partial weight initialization, MOHAWK mixer/block alignment, recovery, 2D Matryoshka training, and experimental ONNX export.
@@ -7,6 +9,8 @@
 **Embedding comparison:** [Arctic Embed XS versus current Model2Vec](output/embedding_comparison/demo.html) on 20,000 historical posts and a hidden-hashtag topic probe, using cosine clustering and the adaptive PPCA tree. [Protocol and results](docs/Embedding_Comparison.md).
 
 **Live ingestion:** [Native cross-platform post IDs, centroid + 8-bit codes, PPCA density, and resumable Arrow checkpoints](docs/Live_Ingestion.md). Start with `julia --project=environments/ingestion examples/ingest_live.jl --config examples/live_sources.toml`. The default run is bounded and uses CPU; CUDA is optional.
+
+**Disk-backed tree experiment:** [Leaf-local compression and storage comparison](output/disk_ablation/demo.html) on 100,000 GTE-tiny posts: six formats, append/leaf layouts, four managed-memory budgets and three seeds. [Implementation, protocol and reproduction](docs/Disk_Storage_Ablation.md). The live index is unchanged.
 
 **Leaf-only latent tree:** [Gaussian representation experiment](output/leaf_latent/demo.html) · [Protocol](docs/Leaf_Latent_Experiment.md).
 
@@ -133,3 +137,14 @@ Per-post latent migration: [split/merge transport and conditioning experiment](d
 Streaming post storage: [local codec comparison with arrivals and expiry](docs/Streaming_Codecs.md) · [interactive tradeoffs on synthetic and 100,000-post Bluesky data](output/streaming_codecs/demo.html).
 
 Density ablation: [uniform, diagonal and PPCA models with a shared centroid codec](docs/Density_Ablation.md) · [simulated user-localization outcomes](output/density_ablation/demo.html).
+
+[Pluggable keyword extraction and per-leaf summaries](docs/Leaf_Keywords.md) adds opt-in YAKE preparation, exact decayed keyword counts in the disk tree, and an [interactive 100,000-post comparison](output/keywords/demo.html).
+
+[Native Julia YAKE](julia-yake/README.md) provides a standalone keyword extractor and
+an optional `JuliaYakeExtractor` adapter for the disk-backed leaf summaries.
+
+[Disk-backed live ingestion](docs/Disk_Live_Ingestion.md) now connects the source
+readers to Float16 storage, rank-4 PPCA and native Julia YAKE summaries with atomic
+source cursors. The default overnight store is `data/live_disk_gte`, using pinned 384D GTE-tiny
+float ONNX inference and Float16 vector storage. The older Qwen store remains
+separate at `data/live_disk`.

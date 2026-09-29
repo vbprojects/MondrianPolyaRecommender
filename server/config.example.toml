@@ -1,0 +1,40 @@
+# Server configuration; paths are relative to this file.
+mode = "combined" # combined | serve (maintenance enabled, source ingestion disabled)
+store = "../data/live_disk_gte" # resolved relative to this configuration file
+ingestion_config = "../examples/live_sources.toml"
+
+embedding_device = "cpu"
+max_events = 256
+source_seconds = 5
+
+[http]
+host = "127.0.0.1"
+port = 8080
+max_body_bytes = 65536
+queue_capacity = 64
+request_timeout_seconds = 5
+cors_origins = [] # configure explicit client origins before browser deployment
+
+[storage]
+backend = "auto" # existing store: detect; new store: sqlite. Use rocksdb with a new path.
+managed_budget_mib = 256 # existing storage budget; server budget is additional
+server_budget_mib = 32 # buffer sizing allowance, in addition to managed store caches
+maintenance_interval_seconds = 1
+
+[tree]
+pack_refresh_seconds = 5
+polya_kappa = 2.0
+
+[nearby]
+default_limit = 25
+default_leaf_budget = 4
+max_leaf_budget = 16
+default_candidate_budget = 256
+max_candidate_budget = 1024
+max_posting_draws = 8192
+
+[terms]
+default_limit = 25
+max_page_size = 100
+# Reuse the stored policy: up to 8 phrases + 4 supplemental hashtags.
+# Use the existing persisted keyword half-life; serving does not change extraction settings.

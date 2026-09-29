@@ -1,0 +1,16 @@
+mode = "serve"
+store = "/data/store"
+ingestion_config = "/app/server/docker/sources.toml"
+
+[http]
+host = "0.0.0.0"
+port = 8080
+queue_capacity = 32
+request_timeout_seconds = 5
+cors_origins = []
+
+[storage]
+backend = "auto"
+managed_budget_mib = 256
+server_budget_mib = 32
+maintenance_interval_seconds = 1
