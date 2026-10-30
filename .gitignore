@@ -283,8 +283,13 @@ __marimo__/
 *.jls
 *.safetensors
 # Native YAKE reproducibility fixtures and measurements.
+!julia-yake/data/
+!julia-yake/data/stopwords_en.txt
 !julia-yake/test/python_reference.json
 !julia-yake/benchmark/results.json
+!test/fixtures/nostr_signed.json
 # Reproducible server environments.
 !server/Manifest.toml
 !server/benchmark/Manifest.toml
+!experiments/gte_tiny_julia/Manifest.toml
+!build-support/compiler/Manifest.toml

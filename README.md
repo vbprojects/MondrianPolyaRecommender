@@ -2,6 +2,8 @@
 
 **Deploy the API and ingester:** [Docker Compose on Lightsail or another Linux VM](deploy/README.md), with persistent disk storage, CPU inference, optional HTTPS and SQLite/RocksDB support.
 
+**Compiled executables:** [PackageCompiler build and deployment](build-support/README.md) for the server and CLI, bundling Julia, SQLite, and the Rust GTE-tiny INT8 encoder.
+
 **Notebook-first encoder experiments:** [NeoBERT block distillation and pretrained Ettin embedding training](encoder_experiments_colab/README.md), with editable end-to-end Colab notebooks and resumable Google Drive checkpoints.
 
 **Qwen → KDA Colab training:** [First-pass runner guide](elastic_embed_colab/README.md) · [Start notebook](elastic_embed_colab/notebooks/01_teacher_cache.ipynb). Includes teacher caches, partial weight initialization, MOHAWK mixer/block alignment, recovery, 2D Matryoshka training, and experimental ONNX export.

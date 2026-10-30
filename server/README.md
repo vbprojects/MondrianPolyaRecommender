@@ -4,6 +4,10 @@ Julia server for the disk-backed tree, with selectable SQLite and RocksDB metada
 or serve an existing index with expiry and reclamation running in the background.
 Clients retain their interest models, feedback and recommendation policies.
 
+For deployment without an installed Julia or Python, use the
+[PackageCompiler application build](../build-support/README.md). It produces
+`mondrian-server` and `mondrian-tool` with a bundled CPU INT8 encoder.
+
 | Endpoint | Result |
 | --- | --- |
 | `GET /v1/tree` | Versioned cuts, partition probabilities and log densities. Optional `?view=ppca` adds local covariance factors. |
@@ -35,6 +39,11 @@ ingestion for that store: the writer lock prevents running both simultaneously.
 Combined mode uses the existing Python embedding worker/environment and hashtag summaries. It uses pinned 384D GTE-tiny (float ONNX, 256-token masked mean pooling),
 Float16 storage and the existing keyword policy. The original Qwen store remains
 separate; resuming it requires the explicit Qwen source configuration.
+
+For Python-free CPU INT8 inference, prepare the [Rust worker](../native/gte-worker/README.md),
+select `examples/live_sources.rust.toml` as the ingestion configuration, and choose a new
+store such as `data/live_disk_gte_int8`. The bridge selects Rust from the INT8 model
+identity. The existing FP32 index cannot be resumed with that embedding identity.
 
 Set `mode = "serve"` to disable source collection and inference. This requires an
 existing disk store; it continues expiry and physical maintenance and needs no

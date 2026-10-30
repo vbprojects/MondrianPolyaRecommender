@@ -67,9 +67,12 @@ now=1735689800.
     @test batch.complete && batch.cursor=="" && length(batch.events)==1
 end
 @testset "Actual HTTP and WebSocket transport" begin
-    server=HTTP.serve!(request->HTTP.Response(200,["Content-Type"=>"application/json"],JSON3.write((ok=true,)));listenany=true)
+    server=HTTP.serve!(request->HTTP.Response(200,["Content-Type"=>"application/json"],
+        request.target=="/array" ? "[{\"id\":\"12\"}]" : request.target=="/empty" ? "[]" : JSON3.write((ok=true,)));listenany=true)
     try
         @test json_get("http://"*HTTP.server_addr(server))["ok"]
+        @test only(json_get("http://"*HTTP.server_addr(server)*"/array"))["id"]=="12"
+        @test isempty(json_get("http://"*HTTP.server_addr(server)*"/empty"))
     finally close(server) end
     blue=fixtures[1]["payload"]
     server=HTTP.WebSockets.listen!("127.0.0.1",0;listenany=true,subprotocols=["xrpc.v1.json"]) do ws

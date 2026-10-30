@@ -1,0 +1,30 @@
+{
+  "note": {
+    "pubkey": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "created_at": 1735689600,
+    "kind": 1,
+    "tags": [
+      [
+        "t",
+        "julia"
+      ]
+    ],
+    "content": "A test note about Julia + kernels 🦋",
+    "id": "cfebe5e22c223e84e2bf4ab7d3ba1f4bf1cc32be5bc5ac484c35a73714c89c52",
+    "sig": "2bcba593664d1b935f2b8a9d0fb2567d9ad8e4b66d1ac8809761cae4a806aab9c03e2efe685b98c09d37b43761e2467b6f5055d9498a2e6d163b171f2bf9763d"
+  },
+  "delete": {
+    "pubkey": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "created_at": 1735689660,
+    "kind": 5,
+    "tags": [
+      [
+        "e",
+        "cfebe5e22c223e84e2bf4ab7d3ba1f4bf1cc32be5bc5ac484c35a73714c89c52"
+      ]
+    ],
+    "content": "",
+    "id": "0165baf6884b0ec93de0d13415243344439d7fddbef449b205b09d7aade5107a",
+    "sig": "62c2f58e69555729ddecf29c308f3009950994e22446fbfa680ffacb0b68388747a8ed36b9c1d7230d8aea9f1677324635685f104d497d4a9504e765c486193e"
+  }
+}

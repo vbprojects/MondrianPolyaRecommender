@@ -29,7 +29,8 @@ function json_get(url;query=Pair{String,String}[],headers=Pair{String,String}[],
         status_exception=false,connect_timeout=min(10.,seconds),request_timeout=seconds,
         max_decompressed_size=8*1024*1024)
     response.status==200 || throw(SourceError("source HTTP status $(response.status)"))
-    JSON3.read(take!(io),Dict{String,Any})
+    # Mastodon timelines are arrays; Threads and ActivityPub return objects.
+    JSON3.read(take!(io),Any)
 end
 """Call consume for each bounded frame. Returning false stops the connection.
 isready polling also ends quiet streams without relying on incoming traffic.

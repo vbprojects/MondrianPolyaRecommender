@@ -6,6 +6,11 @@ summaries, using `data/live_disk_gte`. The overnight launcher uses this path.
 The live default is pinned 384D GTE-tiny with float ONNX inference; the original
 Qwen store remains at `data/live_disk` with `examples/live_sources.qwen.toml`.
 
+A [native Rust CPU INT8 worker](../native/gte-worker/README.md) is available through
+`examples/live_sources.rust.toml`. It performs embedding and Nostr verification without
+a Python process. It uses a distinct embedding identity and a new
+`data/live_disk_gte_int8` store; existing FP32/Qwen configurations keep their Python backend.
+
 The sections below document the **legacy Arrow backend** and shared source/identity
 semantics. For those commands, invoke `examples/ingest_arrow_live.jl` directly
 (or add `--storage arrow`) and use the configuration matching the original store.

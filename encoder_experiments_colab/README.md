@@ -2,6 +2,8 @@
 
 [Benchmark results and model decision](BENCHMARK_RESULTS.md): consolidated quality, classification and encoding-cost results, with GTE-tiny selected for the next deployment stage.
 
+[Quantized GTE-tiny in Julia](../experiments/gte_tiny_julia/README.md): a dedicated Julia tokenizer and INT8 inference experiment, with ONNX parity checks, CPU timings and a reduced retrieval screen. Inference does not use Python or ONNX Runtime.
+
 Open a notebook in VS Code and connect it to a **Colab A100** runtime. Each notebook is independent and contains all of its model, data, training, checkpointing, evaluation and export code. No local package installation or repository checkout is needed in Colab.
 
 - [01_neobert.ipynb](01_neobert.ipynb): adapt the MIT-licensed 28-layer NeoBERT into an embedding teacher using GTE supervision and retrieval triplets, then copy eight complete blocks into a student and distill from that adapted NeoBERT teacher. Width, attention heads, tokenizer and pooling are preserved. The unlicensed GooAQ checkpoint is not used.
